@@ -28,7 +28,7 @@ body {
 
 .row {
     display: grid;
-    grid-template-columns: repeat(12, 50px); /* 12 columns with each cell 50px wide */
+    grid-template-columns: repeat(13, 50px); /* 12 columns with each cell 50px wide */
     gap: 5px; /* Space between cells */
 }
 
@@ -37,10 +37,10 @@ body {
     justify-content: center;
     align-items: center;
     width: 50px;
-    height: 50px;
+    height: 20px;
     background-color: #8385a4;
     color: white;
-    font-size: 16px;
+    font-size: 11px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -51,11 +51,7 @@ body {
         {% for row in matrix %}
             <div class="row">
                 {% for cell in row %}
-                    {% if cell|divisibleby:2  %}
-                        <div class="cell">x</div>
-                    {% else  %}
-                        <div class="cell">y</div>
-                    {% endif  %}
+                <div class="cell">{{ cell.name }}</div>
                 {% endfor %}
             </div>
         {% endfor %}
