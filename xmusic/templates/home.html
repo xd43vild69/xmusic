@@ -44,6 +44,18 @@ body {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.cell_key {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 20px;
+    background-color: #595b6f;
+    color: white;
+    font-size: 11px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
     </style>
 </head>
 <body>
@@ -51,7 +63,7 @@ body {
         {% for row in matrix %}
             <div class="row">
                 {% for cell in row %}
-                <div class="cell">{{ cell.name }}</div>
+                <div class="{% if cell.step == 1 %} cell_key {% else %} cell {% endif %}">{{ cell.name }}</div>
                 {% endfor %}
             </div>
         {% endfor %}
