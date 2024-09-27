@@ -105,7 +105,7 @@ class Manager:
                     is_completed = True
                     continue
 
-                if s[i].name != note_key and i == 12:  # init again to set steps
+                if s[i].name != note_key and i == 12:  # restart array
                     i = 0
                     s[i].root = (s[i].name == note_key)
                     s[i].step = interval if interval < 8 else 1

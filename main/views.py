@@ -6,7 +6,9 @@ from .instrument import Instrument
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html')
+    matrix = [[(i * 12) + j + 1 for j in range(12)] for i in range(6)]
+    #return render(request, 'matrix.html', {'matrix': matrix})
+    return render(request, 'home.html', {'matrix': matrix})
 
 
 def button_action(request):
