@@ -24,8 +24,13 @@ def button_action(request):
     
 def call_manager():
     managerTool = Manager(Instrument.Guitar)
-    tool = managerTool.set_strings_tool()
-    managerTool.set_scale('E')
+    managerTool.set_strings_tool()
+
+    #scale = ['H', 'W', 'W', 'H', 'W', 'W', 'W', 'H']
+    scale = ['W', 'W', 'H', 'W', 'W', 'H', 'W', 'W']
+    
+    tool =  managerTool.set_scale('A', scale)
+    
     n1 = "x"
     
 
