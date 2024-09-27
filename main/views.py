@@ -31,6 +31,10 @@ def call_manager():
     
     tool =  managerTool.set_scale('A', scale)
     
-    n1 = "x"
+    for s in managerTool.tool_strings:
+        print("string")
+        for n in s:            
+            if n.step != 0:
+                print(f"{n.name} is {n.step}")
     
 

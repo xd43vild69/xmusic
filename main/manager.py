@@ -63,6 +63,18 @@ class Manager:
 
         return notes_string
 
+    def get_steps(self, interval_type):
+        steps = 0
+
+        if interval_type == 'H':
+            steps = 1
+        elif interval_type == 'W':
+            steps = 2
+        elif interval_type == 'WH':
+            steps = 3
+
+        return steps
+
     def set_scale(self, note_key, scale):        
         for s in self.tool_strings:  # for each string in tool
             is_completed = False
@@ -97,81 +109,3 @@ class Manager:
                     i = 0
                     s[i].root = (s[i].name == note_key)
                     s[i].step = interval if interval < 8 else 1
-
-    def get_steps(self, interval_type):
-        steps = 0
-
-        if interval_type == 'H':
-            steps = 1
-        elif interval_type == 'W':
-            steps = 2
-        elif interval_type == 'WH':
-            steps = 3
-
-        return steps
-
-    def set_scale2(self, note_key):
-        # Define scale intervals: H for half-step, W for whole-step
-        scale_major = {'H': 1, 'W': 2}
-        # scale_mayor = ['H','W','W','H','W','W','W','H']
-
-        for string in self.tool_strings:  # for each string in tool
-            interval = 1
-
-            # Find the index of the root note in the string
-            index_key_note = next(
-                (index for index, note in enumerate(string) if note.name == note_key), -1)
-
-            if index_key_note == -1:
-                continue  # Skip this string if root note isn't found
-
-            # Set the root note and its step
-            string[index_key_note].root = True
-            string[index_key_note].step = interval
-
-            # Iterate over the scale intervals
-            i = index_key_note
-            for step in scale_major:
-                next_position = scale_major[step]
-
-                # Wrap around using modulo
-                i = (i + next_position) % len(string)
-
-                interval += 1
-                string[i].root = (string[i].name == note_key)
-                # Reset step to 1 after completing the scale
-                string[i].step = interval if interval < 8 else 1
-
-                if interval >= 8:  # Stop when the scale is complete
-                    break
-
-        return self.tool_strings
-
-    def scale_mayor(self):
-        print(f"scale mayor")
-
-        # create 7 notes
-        # define scale pattern on 12 spaces 1 string
-        # display on scren
-
-        scale_notes = []
-
-        names = ['G', 'A', 'B', 'C', 'D', 'E', 'F', 'G']
-
-        steps = ['h', 'w', 'w', 'h', 'w', 'w', 'w', 'h']
-
-        root = True
-
-        for i in range(8):
-
-            if (i == 0):
-                root = True
-            else:
-                root = False
-
-            n = Node(i + 1, names[i], steps[i], root)
-
-            scale_notes.append(n)
-
-        for n in scale_notes:
-            print(f'name: {n.name} interval: {n.interval} step: {n.step}')
