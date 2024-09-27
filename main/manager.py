@@ -28,6 +28,7 @@ class Manager:
 
         if Tool == Tool.Guitar:
             self.instrument = ['E', 'A', 'D', 'G', 'B', 'E']
+            #self.instrument = ['B']
         elif Tool == Tool.Bass4:
             self.instrument = ['E', 'A', 'D', 'G']
         elif Tool == Tool.Bass4:
@@ -62,14 +63,11 @@ class Manager:
         return notes_string
 
     def set_scale(self, note_key):        
-        # loop through each string on tool_strings to enable notes
-
         scale_mayor = ['H','W','W','H','W','W','W','H']
 
         for s in self.tool_strings: # for each string in tool                            
             is_completed = False
             interval = 1
-            is_active = False
 
             index_key_note = -1
 
@@ -92,29 +90,43 @@ class Manager:
                     next_position = 1
                 elif next_interval == 'W':
                     next_position = 2
+                elif next_interval == 'WH':
+                    next_position = 3
                 
                 i = i + next_position
+
+                if i > 12:
+                    i = 12 - i + next_position 
+
                 j += next_position
                 interval += 1                   
                 
-                if i + next_position > len(s):
-                    s[0 + i].root = False
-                    s[0 + i].step = interval
+                if s[i].name == note_key:
+                    s[i].root = True
                 else:
+                    s[i].root = False                        
+                    
+                if interval == 8:
+                    s[i].step = 1
+                    is_completed = True
+                    continue
+                else:
+                    s[i].step = interval
+                
+                if j >= 12:  # End when a full octave is reached
+                    is_completed = True
+                    continue
+                    
+                if s[i].name != note_key and i == 12 :
+                    i = 0
                     if s[i].name == note_key:
                         s[i].root = True
                     else:
                         s[i].root = False                        
-                    
-                    s[i].step = interval
-                
-                if j >= 12:
-                    is_completed = True
-                    
-                if i >= 12:
-                    i = 0
-            
-            print("ok")
+                        
+                    s[i].step = interval                    
+              
+
 
             
 
