@@ -5,4 +5,6 @@ class Note:
         self.name = name
         self.root = False
         self.step = 0
+        self.fret_mark = False
+        self.fret_zero = False
 

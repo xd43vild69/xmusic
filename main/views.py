@@ -9,20 +9,24 @@ from .note import Note
 
 def get_scale(selected_scale):
     scale = []
-    if selected_scale == "s1":
+    if selected_scale == "mayor":
         scale = ['H', 'W', 'W', 'H', 'W', 'W', 'W', 'H']
-    elif selected_scale == "s2":
+    elif selected_scale == "minor":
         scale = ['W', 'W', 'H', 'W', 'W', 'H', 'W', 'W']
-    elif selected_scale == "m1":
+    elif selected_scale == "locrian":
         scale = ['W', 'H', 'W', 'W', 'H', 'W', 'W', 'W']
-    elif selected_scale == "m2":
+    elif selected_scale == "octatonic":
         scale = ['W', 'H', 'W', 'H', 'W', 'H', 'W', 'H', 'W']
-    elif selected_scale == "m3":
+    elif selected_scale == "dark_3":
         scale = ['W', 'H', 'W', 'H', 'W', 'H', 'H', 'W', 'W']
-    elif selected_scale == "m4":
+    elif selected_scale == "dark_4":
         scale = ['H','H', 'W', 'W', 'H', 'W', 'H', 'W', 'H']
-    elif selected_scale == "m5":
+    elif selected_scale == "dark_5":
         scale = ['H', 'H', 'W', 'H', 'W', 'W', 'H', 'W', 'H']
+    elif selected_scale == "dark_6":
+        scale = ['W', 'H', 'W', 'H', 'W', 'W', 'W', 'W']
+    elif selected_scale == "dark_7":
+        scale = ['H', 'H', 'W', 'H', 'W', 'H', 'H', 'WH', 'H']                
     return scale
 
 
@@ -41,16 +45,15 @@ def button_action(request):
 
     if request.method == 'POST':
         # 'color' is the name of the select element
-        selected_scale = request.POST.get('scale')
-        selected_key = request.POST.get('key')
+        selected_scale = request.POST.get('scale') if request.POST.get('scale') != "-1" else "mayor"        
+        selected_key = request.POST.get('key') if request.POST.get('key') != "-1" else "A"
 
     scale = get_scale(selected_scale)
     managerTool = Manager(Instrument.Guitar)
     managerTool.set_strings_tool()
     managerTool.set_scale(selected_key, scale)
     matrix = set_matrix(managerTool.tool_strings)
-
-    return render(request, 'home.html', {'matrix': matrix})
+    return render(request, 'home.html', {'matrix': matrix, 'scale' : selected_scale, 'key' : selected_key})
 
 
 def set_matrix(tool_string):
@@ -59,8 +62,7 @@ def set_matrix(tool_string):
         interval = 1
         for col_index, n in enumerate(ts):
 
-            if n.step != 0:
-                print(f"{n.name} is {n.step}")
+            if n.step != 0:            
                 matrix[row_index][col_index] = n
                 interval += 1
 

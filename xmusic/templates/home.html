@@ -48,16 +48,40 @@
             font-size: 11px;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+        }        
 
-        .cell_key {
+        .cell_first {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 25px;
+            height: 20px;
+            background-color: #8385a4;
+            color: rgb(255, 255, 255);
+            font-size: 11px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cell_fret {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 50px;
             height: 20px;
-            background-color: #8385a4;
             color: white;
+            font-size: 11px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .cell_fret_mark {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 20px;
+            color: #980000;
             font-size: 11px;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -90,6 +114,17 @@
             justify-content: center;
             font-size: 1.2em;
         }
+        .box2 {
+            width: 100%;
+            /* Each div takes up about half the row */
+            height: 30px;
+            background-color: rgb(14, 14, 14);
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
         .circle {
             display: flex;
             justify-content: center;  /* Centers horizontally */
@@ -100,35 +135,76 @@
             color: white;
             border-radius: 50%; /* Makes the div a circle */
         }
+        .header{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 150px;
+            height: 20px;
+            background-color: #8385a4;
+            color: white;
+            font-size: 11px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            gap: 5px;
+            margin-right: 10px;
+        }
     </style>
 </head>
 
 <body>
+    
     <div class="container">
+        <div class="box2">
+            <div class="header">key: {{key}}</div>
+            <div class="header">scale: {{scale}}</div>
+        </div>
         <div class="box">
             <div class="matrix">
                 {% for row in matrix %}
                 <div class="row">
                     {% for cell in row %}
-                        <div class="{% if cell.step == 1 %} cell_key {% else %} cell {% endif %}">
+                        <div class="{% if forloop.first %} cell_first {% else %} cell {% endif %}">
                             {% if cell.step == 1 %}
-                                <div class="circle">{{ cell.name }} </div> 
+                                <div class="circle">{{ cell.step }} </div> 
+                            {% elif cell.step == 0 %}
+                                <div></div> 
                             {% else %}
-                                <div>{{ cell.name }} </div> 
+                                <div>{{ cell.step }} </div> 
                             {% endif %}                            
                         </div>
                     {% endfor %}
                 </div>
                 {% endfor %}
             </div>
+
         </div>
-        <div class="box"> <!-- python manage.py runserver  <div class="cell">{{ cell }}</div> -->
+        <div class="box2">
+            <div class="row">            
+                <div class="cell_fret">0</div>
+                <div class="cell_fret">1</div>
+                <div class="cell_fret">2</div>
+                <div class="cell_fret">3</div>
+                <div class="cell_fret">4</div>
+                <div class="cell_fret">5</div>
+                <div class="cell_fret">6</div>
+                <div class="cell_fret">7</div>
+                <div class="cell_fret">8</div>
+                <div class="cell_fret">9</div>
+                <div class="cell_fret">10</div>
+                <div class="cell_fret">11</div>
+                <div class="cell_fret">12</div>
+            </div>
+        </div>
+        
+        <div class="box2"> <!-- python manage.py runserver  <div class="cell">{{ cell }}</div> -->
             
                 <!-- Form with a button that sends a POST request -->
                 <form method="POST" action="{% url 'button_action' %}">
                     {% csrf_token %}
                     <label for="key">Key:</label>
                     <select name="key" id="key">
+                        <option value="-1"></option>
                         <option value="A">A</option>
                         <option value="B">B</option>
                         <option value="C">C</option>
@@ -139,17 +215,18 @@
                     </select>
                     <label for="scale">Scale:</label>
                     <select name="scale" id="scale">
-                        <option value="s1">Mayor</option>
-                        <option value="s2">Minor</option>
-                        <option value="m1">Locrian</option>
-                        <option value="m2">Octatonic</option>
-                        <option value="m3">M3</option>
-                        <option value="m4">M4</option>
-                        <option value="m5">M5</option>
+                        <option value="-1"></option>
+                        <option value="mayor">Mayor</option>
+                        <option value="minor">Minor</option>
+                        <option value="locrian">Locrian</option>
+                        <option value="octatonic">Octatonic</option>
+                        <option value="dark_3">dark_3</option>
+                        <option value="dark_4">dark_4</option>
+                        <option value="dark_5">dark_5</option>
                     </select>
+                    <input type="text" name="name" value="{{ name_value }}">
                     <button type="submit">Update</button>
                 </form>
-           
         </div>
     </div>
 
