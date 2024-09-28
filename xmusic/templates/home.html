@@ -1,82 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f2f2f2;
-    font-family: Arial, sans-serif;
-}
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #262626;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+        }
 
-.matrix {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Space between rows */
-}
+        .matrix {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            /* Space between rows */
+        }
 
-.row {
-    display: grid;
-    grid-template-columns: repeat(13, 50px); /* 12 columns with each cell 50px wide */
-    gap: 5px; /* Space between cells */
-}
+        .row {
+            display: grid;
+            grid-template-columns: repeat(13, 50px);
+            /* 12 columns with each cell 50px wide */
+            gap: 5px;
+            /* Space between cells */
+        }
 
-.cell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 20px;
-    background-color: #8385a4;
-    color: white;
-    font-size: 11px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.cell_key {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 20px;
-    background-color: #595b6f;
-    color: white;
-    font-size: 11px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 20px;
+            background-color: #8385a4;
+            color: white;
+            font-size: 11px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .cell_key {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 20px;
+            background-color: #c9c9c9;
+            color: rgb(39, 39, 39);
+            font-size: 11px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form_base {
+            display: flex;
+            width: 150px;
+            height: 120px;
+            background-color: #595b6f;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            /* To align the divs horizontally */
+            gap: 10px;
+            /* Space between the divs */
+        }
+
+        .box {
+            width: 100%;
+            /* Each div takes up about half the row */
+            height: 200px;
+            background-color: rgb(14, 14, 14);
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
     </style>
 </head>
+
 <body>
-    <div class="matrix">
-        {% for row in matrix %}
-            <div class="row">
-                {% for cell in row %}
-                <div class="{% if cell.step == 1 %} cell_key {% else %} cell {% endif %}">{{ cell.name }}</div>
+    <div class="container">
+        <div class="box">
+            <div class="matrix">
+                {% for row in matrix %}
+                <div class="row">
+                    {% for cell in row %}
+                    <div class="{% if cell.step == 1 %} cell_key {% else %} cell {% endif %}">{{ cell.name }}</div>
+                    {% endfor %}
+                </div>
                 {% endfor %}
             </div>
-        {% endfor %}
+        </div>
+        <div class="box"> <!-- python manage.py runserver  <div class="cell">{{ cell }}</div> -->
+            
+                <!-- Form with a button that sends a POST request -->
+                <form method="POST" action="{% url 'button_action' %}">
+                    {% csrf_token %}
+                    <label for="key">Key:</label>
+                    <select name="key" id="key">
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="G">G</option>
+                    </select>
+                    <label for="scale">Scale:</label>
+                    <select name="scale" id="scale">
+                        <option value="s1">Mayor</option>
+                        <option value="s2">Minor</option>
+                        <option value="s3">Dorian</option>
+                        <option value="s4">Phrygian</option>
+                        <option value="s5">Lydian</option>
+                        <option value="s6">Mixolidian</option>
+                        <option value="s7">Locrian</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+           
+        </div>
     </div>
-    <!-- python manage.py runserver  <div class="cell">{{ cell }}</div> -->
-        
-    <!-- Form with a button that sends a POST request -->
-    <form method="POST" action="{% url 'button_action' %}">
-        {% csrf_token %}
-        <button type="submit">Click Me</button>
-    </form>
 
-    <br/>
-     
 </body>
+
 </html>
