@@ -99,9 +99,9 @@ class Manager:
                     i = 12 - i + next_position
 
                 s[i].root = (s[i].name == note_key)
-                s[i].step = interval if interval < 8 else 1
+                s[i].step = interval if interval < len(scale) else 1
 
-                if interval == 8:
+                if interval == len(scale):
                     is_completed = True
                     continue
 

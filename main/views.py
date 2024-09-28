@@ -13,7 +13,18 @@ def get_scale(selected_scale):
         scale = ['H', 'W', 'W', 'H', 'W', 'W', 'W', 'H']
     elif selected_scale == "s2":
         scale = ['W', 'W', 'H', 'W', 'W', 'H', 'W', 'W']
+    elif selected_scale == "m1":
+        scale = ['W', 'H', 'W', 'W', 'H', 'W', 'W', 'W']
+    elif selected_scale == "m2":
+        scale = ['W', 'H', 'W', 'H', 'W', 'H', 'W', 'H', 'W']
+    elif selected_scale == "m3":
+        scale = ['W', 'H', 'W', 'H', 'W', 'H', 'H', 'W', 'W']
+    elif selected_scale == "m4":
+        scale = ['H','H', 'W', 'W', 'H', 'W', 'H', 'W', 'H']
+    elif selected_scale == "m5":
+        scale = ['H', 'H', 'W', 'H', 'W', 'W', 'H', 'W', 'H']
     return scale
+
 
 def home(request):
 
@@ -24,11 +35,13 @@ def home(request):
     matrix = set_matrix(managerTool.tool_strings)
     return render(request, 'home.html', {'matrix': matrix})
 
+
 def button_action(request):
     selected_scale = None  # Default to None if nothing is selected yet
 
     if request.method == 'POST':
-        selected_scale = request.POST.get('scale')  # 'color' is the name of the select element
+        # 'color' is the name of the select element
+        selected_scale = request.POST.get('scale')
         selected_key = request.POST.get('key')
 
     scale = get_scale(selected_scale)
@@ -39,6 +52,7 @@ def button_action(request):
 
     return render(request, 'home.html', {'matrix': matrix})
 
+
 def set_matrix(tool_string):
     matrix = [[Note("") for j in range(13)] for i in range(6)]
     for row_index, ts in enumerate(reversed(tool_string)):
@@ -48,10 +62,10 @@ def set_matrix(tool_string):
             if n.step != 0:
                 print(f"{n.name} is {n.step}")
                 matrix[row_index][col_index] = n
-                interval +=1 
+                interval += 1
 
             if interval > 8:
-                break          
+                break
 
     return matrix
 

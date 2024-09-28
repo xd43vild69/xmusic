@@ -56,8 +56,8 @@
             align-items: center;
             width: 50px;
             height: 20px;
-            background-color: #c9c9c9;
-            color: rgb(39, 39, 39);
+            background-color: #8385a4;
+            color: white;
             font-size: 11px;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -90,6 +90,16 @@
             justify-content: center;
             font-size: 1.2em;
         }
+        .circle {
+            display: flex;
+            justify-content: center;  /* Centers horizontally */
+            align-items: center;  
+            width: 20px;
+            height: 20px;
+            background-color: #980000; /* Green background */
+            color: white;
+            border-radius: 50%; /* Makes the div a circle */
+        }
     </style>
 </head>
 
@@ -100,7 +110,13 @@
                 {% for row in matrix %}
                 <div class="row">
                     {% for cell in row %}
-                    <div class="{% if cell.step == 1 %} cell_key {% else %} cell {% endif %}">{{ cell.name }}</div>
+                        <div class="{% if cell.step == 1 %} cell_key {% else %} cell {% endif %}">
+                            {% if cell.step == 1 %}
+                                <div class="circle">{{ cell.name }} </div> 
+                            {% else %}
+                                <div>{{ cell.name }} </div> 
+                            {% endif %}                            
+                        </div>
                     {% endfor %}
                 </div>
                 {% endfor %}
@@ -125,11 +141,11 @@
                     <select name="scale" id="scale">
                         <option value="s1">Mayor</option>
                         <option value="s2">Minor</option>
-                        <option value="s3">Dorian</option>
-                        <option value="s4">Phrygian</option>
-                        <option value="s5">Lydian</option>
-                        <option value="s6">Mixolidian</option>
-                        <option value="s7">Locrian</option>
+                        <option value="m1">Locrian</option>
+                        <option value="m2">Octatonic</option>
+                        <option value="m3">M3</option>
+                        <option value="m4">M4</option>
+                        <option value="m5">M5</option>
                     </select>
                     <button type="submit">Update</button>
                 </form>
