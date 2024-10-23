@@ -4,152 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #262626;
-            font-family: Arial, sans-serif;
-            font-size: 11px;
-        }
-
-        .matrix {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            /* Space between rows */
-        }
-
-        .row {
-            display: grid;
-            grid-template-columns: repeat(13, 50px);
-            /* 12 columns with each cell 50px wide */
-            gap: 5px;
-            /* Space between cells */
-        }
-
-        .cell {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 50px;
-            height: 20px;
-            background-color: #8385a4;
-            color: white;
-            font-size: 11px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }        
-
-        .cell_first {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 25px;
-            height: 20px;
-            background-color: #8385a4;
-            color: rgb(255, 255, 255);
-            font-size: 11px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .cell_fret {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 50px;
-            height: 20px;
-            color: white;
-            font-size: 11px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .cell_fret_mark {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 50px;
-            height: 20px;
-            color: #980000;
-            font-size: 11px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .form_base {
-            display: flex;
-            width: 150px;
-            height: 120px;
-            background-color: #595b6f;
-        }
-
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            /* To align the divs horizontally */
-            gap: 10px;
-            /* Space between the divs */
-        }
-
-        .box {
-            width: 100%;
-            /* Each div takes up about half the row */
-            height: 200px;
-            background-color: rgb(14, 14, 14);
-            border: 1px solid #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
-        }
-        .box2 {
-            width: 100%;
-            /* Each div takes up about half the row */
-            height: 30px;
-            background-color: rgb(14, 14, 14);
-            border: 1px solid #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
-        }
-        .circle {
-            display: flex;
-            justify-content: center;  /* Centers horizontally */
-            align-items: center;  
-            width: 20px;
-            height: 20px;
-            background-color: #980000; /* Green background */
-            color: white;
-            border-radius: 50%; /* Makes the div a circle */
-        }
-        .header{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 150px;
-            height: 20px;
-            background-color: #8385a4;
-            color: white;
-            font-size: 11px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            gap: 5px;
-            margin-right: 10px;
-        }
-    </style>
+    <title>Scale Tool</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
@@ -164,7 +21,7 @@
                 {% for row in matrix %}
                 <div class="row">
                     {% for cell in row %}
-                        <div class="{% if forloop.first %} cell_first {% else %} cell {% endif %}">
+                        <div class="{% if forloop.first %} cell_first {% elif forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 10 or forloop.counter == 13 %} cell_fret_mark {% else %} cell {% endif %}">
                             {% if cell.step == 1 %}
                                 <div class="circle">{{ cell.step }} </div> 
                             {% elif cell.step == 0 %}
@@ -197,34 +54,46 @@
             </div>
         </div>
         
-        <div class="box2"> <!-- python manage.py runserver  <div class="cell">{{ cell }}</div> -->
-            
+        <div class="box3"> <!-- python manage.py runserver  <div class="cell">{{ cell }}</div> -->            
                 <!-- Form with a button that sends a POST request -->
                 <form method="POST" action="{% url 'button_action' %}">
                     {% csrf_token %}
-                    <label for="key">Key:</label>
-                    <select name="key" id="key">
-                        <option value="-1"></option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="E">E</option>
-                        <option value="F">F</option>
-                        <option value="G">G</option>
-                    </select>
-                    <label for="scale">Scale:</label>
-                    <select name="scale" id="scale">
-                        <option value="-1"></option>
-                        <option value="mayor">Mayor</option>
-                        <option value="minor">Minor</option>
-                        <option value="locrian">Locrian</option>
-                        <option value="octatonic">Octatonic</option>
-                        <option value="dark_3">dark_3</option>
-                        <option value="dark_4">dark_4</option>
-                        <option value="dark_5">dark_5</option>
-                    </select>
-                    <input type="text" name="name" value="{{ name_value }}">
+                    <div>
+                        <label for="key" style="color:white">Key:</label>\
+                        <select name="key" id="key">
+                            <option value="-1"></option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="G">G</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="scale" style="color:white">Scale:</label>
+                        <select name="scale" id="scale">
+                            <option value="-1"></option>
+                            <option value="mayor">Mayor</option>
+                            <option value="minor">Minor</option>
+                            <option value="mixolydian">mixolydian</option>                       
+                            <option value="locrian">Locrian</option>
+                            <option value="octatonic">Octatonic</option>
+                            <option value="dark_3">dark_3</option>
+                            <option value="dark_4">dark_4</option>
+                            <option value="dark_5">dark_5</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="tool" style="color:white">Tool:</label>
+                        <select name="instrument" id="instrument">
+                            <option value="-1"></option>
+                            <option value="bass4">Bass 4</option>
+                            <option value="bass5">Bass 5</option>
+                            <option value="guitar">Guitar</option>
+                        </select>
+                    </div>
                     <button type="submit">Update</button>
                 </form>
         </div>

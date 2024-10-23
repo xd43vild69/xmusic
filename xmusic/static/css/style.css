@@ -1,0 +1,155 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #262626;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+}
+
+.matrix {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    /* Space between rows */
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(13, 50px);
+    /* 12 columns with each cell 50px wide */
+    gap: 5px;
+    /* Space between cells */
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 15px;
+    background-color: #8385a4;
+    color: white;
+    font-size: 11px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}        
+
+.cell_first {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 15px;
+    background-color: #8385a4;
+    color: rgb(255, 255, 255);
+    font-size: 11px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cell_fret {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 15px;
+    color: white;
+    font-size: 11px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cell_fret_mark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 15px;
+    background-color: #565763;
+    color: white;
+    font-size: 11px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form_base {
+    display: flex;
+    width: 150px;
+    height: 120px;
+    background-color: #595b6f;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    /* To align the divs horizontally */
+    gap: 10px;
+    /* Space between the divs */
+}
+
+.box {
+    width: 100%;
+    /* Each div takes up about half the row */
+    height: 200px;
+    background-color: rgb(14, 14, 14);
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+}
+.box2 {
+    width: 100%;
+    /* Each div takes up about half the row */
+    height: 30px;
+    background-color: rgb(14, 14, 14);
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+}
+.circle {
+    display: flex;
+    justify-content: center;  /* Centers horizontally */
+    align-items: center;  
+    width: 15px;
+    height: 15px;
+    background-color: #980000; /* Green background */
+    color: white;
+    border-radius: 50%; /* Makes the div a circle */
+}
+.box3 {
+    width: 100%;
+    /* Each div takes up about half the row */
+    height: 80px;
+    background-color: rgb(14, 14, 14);
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+}
+.header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 20px;
+    background-color: #8385a4;
+    color: white;
+    font-size: 11px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    gap: 5px;
+    margin-right: 10px;
+}

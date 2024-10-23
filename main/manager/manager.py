@@ -1,6 +1,6 @@
-from .node import Node
-from .note import Note
-from .instrument import Instrument
+from ..entities.node import Node
+from ..entities.note import Note
+from ..instrument import Instrument
 
 
 class Manager:
@@ -29,10 +29,9 @@ class Manager:
 
         if Tool == Tool.Guitar:
             self.instrument = ['E', 'A', 'D', 'G', 'B', 'E']
-            # self.instrument = ['E']
         elif Tool == Tool.Bass4:
             self.instrument = ['E', 'A', 'D', 'G']
-        elif Tool == Tool.Bass4:
+        elif Tool == Tool.Bass5:
             self.instrument = ['B', 'E', 'A', 'D', 'G']
 
     def set_strings_tool(self):
