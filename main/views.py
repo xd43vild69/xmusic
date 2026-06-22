@@ -36,6 +36,26 @@ def get_scale(selected_scale):
         scale = ['H', 'H', 'W', 'H', 'W', 'H', 'H', 'WH', 'H']                
     return scale
 
+def get_chord(selected_chord):
+    chord = []
+    if selected_chord == "major":
+        chord = ['X', '4', '3', '5']
+    elif selected_chord == "minor":
+        chord = ['X', '3', '4', '5']
+    elif selected_chord == "maj7":
+        chord = ['X', '4', '3', '4', '1']
+    elif selected_chord == "min7":
+        chord = ['X', '3', '4', '3', '2']
+    elif selected_chord == "dom7":
+        chord = ['X', '4', '3', '3', '2']
+    elif selected_chord == "m7b5":
+        chord = ['X', '3', '3', '4', '2']
+    elif selected_chord == "dim":
+        chord = ['X', '3', '3', '6']
+    elif selected_chord == "aug":
+        chord = ['X', '4', '4', '4']
+    return chord
+
 def get_strings(instrument):
     strings = 6
     if instrument == Instrument.Bass4:
@@ -48,21 +68,35 @@ def get_strings(instrument):
 
 def home(request):
     instrument = Instrument.Bass4
-    scale = get_scale("mayor")
+    pattern = get_scale("mayor")
     managerTool = Manager(instrument)
     managerTool.set_strings_tool()
-    managerTool.set_scale('A', scale)
+    managerTool.set_scale('A', pattern)
     matrix = set_matrix(managerTool.tool_strings, instrument)
-    return render(request, 'home.html', {'matrix': matrix, 'display_mode': 'degrees'})
+    return render(request, 'home.html', {
+        'matrix': matrix, 
+        'display_mode': 'degrees',
+        'mode': 'scale',
+        'scale': 'mayor',
+        'chord': 'major',
+        'key': 'A',
+        'instrument': 'bass4'
+    })
 
 
 def button_action(request):
-    selected_scale = None  # Default to None if nothing is selected yet
+    selected_mode = "scale"
+    selected_scale = "mayor"
+    selected_chord = "major"
+    selected_key = "A"
+    selected_instrument = "guitar"
+    selected_display_mode = "degrees"
     
     if request.method == 'POST':
-        # 'color' is the name of the select element
-        selected_scale = request.POST.get('scale') if request.POST.get('scale') != "-1" else "mayor"                
-        selected_key = request.POST.get('key') if request.POST.get('key') != "-1" else "A"                
+        selected_mode = request.POST.get('mode') if request.POST.get('mode') else "scale"
+        selected_scale = request.POST.get('scale') if request.POST.get('scale') != "-1" else "mayor"
+        selected_chord = request.POST.get('chord') if request.POST.get('chord') != "-1" else "major"
+        selected_key = request.POST.get('key') if request.POST.get('key') != "-1" else "A"
         selected_instrument = request.POST.get('instrument') if request.POST.get('instrument') != "-1" else "guitar"
         selected_display_mode = request.POST.get('display_mode') if request.POST.get('display_mode') else "degrees"
 
@@ -72,13 +106,27 @@ def button_action(request):
             tool = Instrument.Bass4
         elif selected_instrument == "bass5":
             tool = Instrument.Bass5
+    else:
+        tool = Instrument.Guitar
 
-    scale = get_scale(selected_scale)
+    if selected_mode == "scale":
+        pattern = get_scale(selected_scale)
+    else:
+        pattern = get_chord(selected_chord)
+
     managerTool = Manager(tool)
     managerTool.set_strings_tool()
-    managerTool.set_scale(selected_key, scale)  
+    managerTool.set_scale(selected_key, pattern)  
     matrix = set_matrix(managerTool.tool_strings, tool)
-    return render(request, 'home.html', {'matrix': matrix, 'scale' : selected_scale, 'key' : selected_key, 'instrument' : selected_instrument, 'display_mode': selected_display_mode})
+    return render(request, 'home.html', {
+        'matrix': matrix, 
+        'mode': selected_mode,
+        'scale': selected_scale, 
+        'chord': selected_chord,
+        'key': selected_key, 
+        'instrument': selected_instrument, 
+        'display_mode': selected_display_mode
+    })
 
 
 def set_matrix(tool_string, instrument):
@@ -91,18 +139,3 @@ def set_matrix(tool_string, instrument):
                 matrix[row_index][col_index] = n
 
     return matrix
-
-def set_chords(chords):
-    matrix = [[Note("") for j in range(13)] for i in range(6)]
-
-    for c in chords:
-        matrix[c.string][c.fret] = c.note
-    
-    return matrix
-
-def set_chord(name):
-    locations = []
-    if name == "c1":
-        locations = [[6,0],[5,2], [4,2], [3,3], [2,0], [1,0]]
-    
-    return locations

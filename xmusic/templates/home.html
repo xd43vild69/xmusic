@@ -18,7 +18,7 @@
             <h1 class="app-title">Scale<span>Tool</span></h1>
             <div class="badge-group">
                 <span class="badge">Key <strong>{{ key|default:"A" }}</strong></span>
-                <span class="badge">Scale <strong>{{ scale|default:"Mayor" }}</strong></span>
+                <span class="badge">{% if mode == 'chord' %}Chord{% else %}Scale{% endif %} <strong>{% if mode == 'chord' %}{{ chord|default:"Major"|title }}{% else %}{{ scale|default:"Mayor"|title }}{% endif %}</strong></span>
                 <span class="badge">
                     {% if instrument == "bass4" %}Bass 4{% elif instrument == "bass5" %}Bass 5{% else %}Guitar{% endif %}
                 </span>
@@ -29,6 +29,13 @@
         <div class="box3">
             <form method="POST" action="{% url 'button_action' %}">
                 {% csrf_token %}
+                <div class="form-group">
+                    <label for="mode">Mode</label>
+                    <select name="mode" id="mode" onchange="this.form.submit()">
+                        <option value="scale" {% if mode == "scale" %}selected{% endif %}>Scale</option>
+                        <option value="chord" {% if mode == "chord" %}selected{% endif %}>Chord</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label for="key">Key</label>
                     <select name="key" id="key" onchange="this.form.submit()">
@@ -42,6 +49,22 @@
                         <option value="G" {% if key == "G" %}selected{% endif %}>G</option>
                     </select>
                 </div>
+                {% if mode == "chord" %}
+                <div class="form-group">
+                    <label for="chord">Type</label>
+                    <select name="chord" id="chord" onchange="this.form.submit()">
+                        <option value="major" {% if chord == "major" %}selected{% endif %}>Major</option>
+                        <option value="minor" {% if chord == "minor" %}selected{% endif %}>Minor</option>
+                        <option value="maj7" {% if chord == "maj7" %}selected{% endif %}>Maj7</option>
+                        <option value="min7" {% if chord == "min7" %}selected{% endif %}>Min7</option>
+                        <option value="dom7" {% if chord == "dom7" %}selected{% endif %}>Dom7</option>
+                        <option value="m7b5" {% if chord == "m7b5" %}selected{% endif %}>m7b5</option>
+                        <option value="dim" {% if chord == "dim" %}selected{% endif %}>Dim</option>
+                        <option value="aug" {% if chord == "aug" %}selected{% endif %}>Aug</option>
+                    </select>
+                </div>
+                <input type="hidden" name="scale" value="{{ scale|default:'mayor' }}">
+                {% else %}
                 <div class="form-group">
                     <label for="scale">Scale</label>
                     <select name="scale" id="scale" onchange="this.form.submit()">
@@ -58,6 +81,8 @@
                         <option value="dark_5" {% if scale == "dark_5" %}selected{% endif %}>Dark 5</option>
                     </select>
                 </div>
+                <input type="hidden" name="chord" value="{{ chord|default:'major' }}">
+                {% endif %}
                 <div class="form-group">
                     <label for="instrument">Instrument</label>
                     <select name="instrument" id="instrument" onchange="this.form.submit()">

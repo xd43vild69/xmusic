@@ -71,6 +71,11 @@ class Manager:
             steps = 2
         elif interval_type == 'WH':
             steps = 3
+        else:
+            try:
+                steps = int(interval_type)
+            except ValueError:
+                pass
 
         return steps
 
