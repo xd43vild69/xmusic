@@ -27,11 +27,29 @@ class Manager:
             Note('A'),
         ]
 
-        if Tool == Tool.Guitar:
+        if Tool == Instrument.Guitar:
             self.instrument = ['E', 'A', 'D', 'G', 'B', 'E']
-        elif Tool == Tool.Bass4:
+        elif Tool == Instrument.GuitarDropD:
+            self.instrument = ['D', 'A', 'D', 'G', 'B', 'E']
+        elif Tool == Instrument.GuitarHalfStepDown:
+            self.instrument = ['D#', 'G#', 'C#', 'F#', 'A#', 'D#']
+        elif Tool == Instrument.GuitarDStandard:
+            self.instrument = ['D', 'G', 'C', 'F', 'A', 'D']
+        elif Tool == Instrument.GuitarDropC:
+            self.instrument = ['C', 'G', 'C', 'F', 'A', 'D']
+        elif Tool == Instrument.GuitarDADGAD:
+            self.instrument = ['D', 'A', 'D', 'G', 'A', 'D']
+        elif Tool == Instrument.GuitarOpenG:
+            self.instrument = ['D', 'G', 'D', 'G', 'B', 'D']
+        elif Tool == Instrument.GuitarOpenD:
+            self.instrument = ['D', 'A', 'D', 'F#', 'A', 'D']
+        elif Tool == Instrument.Bass4:
             self.instrument = ['E', 'A', 'D', 'G']
-        elif Tool == Tool.Bass5:
+        elif Tool == Instrument.Bass4DropD:
+            self.instrument = ['D', 'A', 'D', 'G']
+        elif Tool == Instrument.Bass4DropC:
+            self.instrument = ['C', 'G', 'C', 'F']
+        elif Tool == Instrument.Bass5:
             self.instrument = ['B', 'E', 'A', 'D', 'G']
 
     def set_strings_tool(self):

@@ -20,7 +20,7 @@
                 <span class="badge">Key <strong>{{ key|default:"A" }}</strong></span>
                 <span class="badge">{% if mode == 'chord' %}Chord{% else %}Scale{% endif %} <strong>{% if mode == 'chord' %}{{ chord|default:"Major"|title }}{% else %}{{ scale|default:"Mayor"|title }}{% endif %}</strong></span>
                 <span class="badge">
-                    {% if instrument == "bass4" %}Bass 4{% elif instrument == "bass5" %}Bass 5{% else %}Guitar{% endif %}
+                    {% if instrument == "bass4" %}Bass 4 (Standard){% elif instrument == "bass4_drop_d" %}Bass 4 (Drop D){% elif instrument == "bass4_drop_c" %}Bass 4 (Drop C){% elif instrument == "bass5" %}Bass 5{% elif instrument == "guitar_drop_d" %}Guitar (Drop D){% elif instrument == "guitar_half_step_down" %}Guitar (Half-Step Down){% elif instrument == "guitar_d_standard" %}Guitar (D Standard){% elif instrument == "guitar_drop_c" %}Guitar (Drop C){% elif instrument == "guitar_dadgad" %}Guitar (DADGAD){% elif instrument == "guitar_open_g" %}Guitar (Open G){% elif instrument == "guitar_open_d" %}Guitar (Open D){% else %}Guitar (Standard){% endif %}
                 </span>
             </div>
         </div>
@@ -87,9 +87,18 @@
                     <label for="instrument">Instrument</label>
                     <select name="instrument" id="instrument" onchange="this.form.submit()">
                         <option value="-1">—</option>
-                        <option value="bass4" {% if instrument == "bass4" %}selected{% endif %}>Bass 4</option>
+                        <option value="bass4" {% if instrument == "bass4" %}selected{% endif %}>Bass 4 (Standard)</option>
+                        <option value="bass4_drop_d" {% if instrument == "bass4_drop_d" %}selected{% endif %}>Bass 4 (Drop D)</option>
+                        <option value="bass4_drop_c" {% if instrument == "bass4_drop_c" %}selected{% endif %}>Bass 4 (Drop C)</option>
                         <option value="bass5" {% if instrument == "bass5" %}selected{% endif %}>Bass 5</option>
-                        <option value="guitar" {% if instrument == "guitar" %}selected{% endif %}>Guitar</option>
+                        <option value="guitar" {% if instrument == "guitar" %}selected{% endif %}>Guitar (Standard)</option>
+                        <option value="guitar_drop_d" {% if instrument == "guitar_drop_d" %}selected{% endif %}>Guitar (Drop D)</option>
+                        <option value="guitar_half_step_down" {% if instrument == "guitar_half_step_down" %}selected{% endif %}>Guitar (Half-Step Down)</option>
+                        <option value="guitar_d_standard" {% if instrument == "guitar_d_standard" %}selected{% endif %}>Guitar (D Standard)</option>
+                        <option value="guitar_drop_c" {% if instrument == "guitar_drop_c" %}selected{% endif %}>Guitar (Drop C)</option>
+                        <option value="guitar_dadgad" {% if instrument == "guitar_dadgad" %}selected{% endif %}>Guitar (DADGAD)</option>
+                        <option value="guitar_open_g" {% if instrument == "guitar_open_g" %}selected{% endif %}>Guitar (Open G)</option>
+                        <option value="guitar_open_d" {% if instrument == "guitar_open_d" %}selected{% endif %}>Guitar (Open D)</option>
                     </select>
                 </div>
                 <div class="form-group">

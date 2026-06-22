@@ -58,7 +58,7 @@ def get_chord(selected_chord):
 
 def get_strings(instrument):
     strings = 6
-    if instrument == Instrument.Bass4:
+    if instrument == Instrument.Bass4 or instrument == Instrument.Bass4DropD or instrument == Instrument.Bass4DropC:
         strings = 4
     elif instrument == Instrument.Bass5:
         strings = 5
@@ -104,8 +104,26 @@ def button_action(request):
 
         if selected_instrument == "bass4":
             tool = Instrument.Bass4
+        elif selected_instrument == "bass4_drop_d":
+            tool = Instrument.Bass4DropD
+        elif selected_instrument == "bass4_drop_c":
+            tool = Instrument.Bass4DropC
         elif selected_instrument == "bass5":
             tool = Instrument.Bass5
+        elif selected_instrument == "guitar_drop_d":
+            tool = Instrument.GuitarDropD
+        elif selected_instrument == "guitar_half_step_down":
+            tool = Instrument.GuitarHalfStepDown
+        elif selected_instrument == "guitar_d_standard":
+            tool = Instrument.GuitarDStandard
+        elif selected_instrument == "guitar_drop_c":
+            tool = Instrument.GuitarDropC
+        elif selected_instrument == "guitar_dadgad":
+            tool = Instrument.GuitarDADGAD
+        elif selected_instrument == "guitar_open_g":
+            tool = Instrument.GuitarOpenG
+        elif selected_instrument == "guitar_open_d":
+            tool = Instrument.GuitarOpenD
     else:
         tool = Instrument.Guitar
 
@@ -135,7 +153,7 @@ def set_matrix(tool_string, instrument):
     for row_index, ts in enumerate(reversed(tool_string)):
         interval = 1
         for col_index, n in enumerate(ts):
-            if n.step != 0:            
+            if col_index == 0 or n.step != 0:            
                 matrix[row_index][col_index] = n
 
     return matrix
