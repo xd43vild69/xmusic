@@ -175,5 +175,45 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
         });
+
+        item.addEventListener('click', function() {
+            const interval = this.getAttribute('data-interval');
+            if (!interval) return;
+
+            const roots = document.querySelectorAll('.circle[data-interval="1"]');
+            if (roots.length === 0) return;
+            
+            // Usamos una tónica que esté en las cuerdas más graves (últimos elementos en el DOM)
+            const rootEl = roots[roots.length - 1]; 
+            const rootString = parseInt(rootEl.getAttribute('data-string'));
+            const rootFret = parseInt(rootEl.getAttribute('data-fret'));
+
+            const intervalElements = document.querySelectorAll(`.circle[data-interval="${interval}"], .dot[data-interval="${interval}"]`);
+            if (intervalElements.length === 0) return;
+
+            // Elegimos un elemento de intervalo. Al tomar el [0], normalmente es de cuerdas agudas.
+            let intervalEl = intervalElements[0];
+            
+            // Si el intervalo es la octava (1), tratar de que no sea la misma tónica
+            if (interval === "1" && intervalElements.length > 1) {
+                intervalEl = Array.from(intervalElements).find(el => el !== rootEl) || intervalEl;
+            }
+
+            const intString = parseInt(intervalEl.getAttribute('data-string'));
+            const intFret = parseInt(intervalEl.getAttribute('data-fret'));
+
+            // Reproducir tónica
+            AudioSystem.play(currentInstrument, rootString, rootFret);
+            
+            // Luego de 600ms reproducir el intervalo
+            setTimeout(() => {
+                AudioSystem.play(currentInstrument, intString, intFret);
+                
+                // Detener después de 800ms adicionales
+                setTimeout(() => {
+                    AudioSystem.stop();
+                }, 800);
+            }, 600);
+        });
     });
 });
