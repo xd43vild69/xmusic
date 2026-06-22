@@ -31,7 +31,7 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="key">Key</label>
-                    <select name="key" id="key">
+                    <select name="key" id="key" onchange="this.form.submit()">
                         <option value="-1">—</option>
                         <option value="A" {% if key == "A" %}selected{% endif %}>A</option>
                         <option value="B" {% if key == "B" %}selected{% endif %}>B</option>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group">
                     <label for="scale">Scale</label>
-                    <select name="scale" id="scale">
+                    <select name="scale" id="scale" onchange="this.form.submit()">
                         <option value="-1">—</option>
                         <option value="mayor" {% if scale == "mayor" %}selected{% endif %}>Mayor</option>
                         <option value="minor" {% if scale == "minor" %}selected{% endif %}>Minor</option>
@@ -58,14 +58,13 @@
                 </div>
                 <div class="form-group">
                     <label for="instrument">Instrument</label>
-                    <select name="instrument" id="instrument">
+                    <select name="instrument" id="instrument" onchange="this.form.submit()">
                         <option value="-1">—</option>
                         <option value="bass4" {% if instrument == "bass4" %}selected{% endif %}>Bass 4</option>
                         <option value="bass5" {% if instrument == "bass5" %}selected{% endif %}>Bass 5</option>
                         <option value="guitar" {% if instrument == "guitar" %}selected{% endif %}>Guitar</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-primary">Update</button>
             </form>
         </div>
 
