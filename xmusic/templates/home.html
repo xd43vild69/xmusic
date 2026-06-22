@@ -144,7 +144,7 @@
                     </div>
                     <!-- Fret cells -->
                     {% for cell in row %}
-                        <div class="{% if forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 10 or forloop.counter == 13 %}cell_fret_mark{% else %}cell{% endif %}">
+                        <div class="{% if forloop.counter == 1 or forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 10 or forloop.counter == 13 %}cell_fret_mark{% else %}cell{% endif %}">
                             {% if cell.step == 1 %}
                                 <div class="circle" data-string="{{ forloop.parentloop.counter0 }}" data-fret="{{ forloop.counter0 }}">
                                     {% if display_mode == "notes" %}{{ cell.name }}{% elif display_mode == "intervals" %}{{ cell.interval }}{% else %}{{ cell.step }}{% endif %}
@@ -167,7 +167,7 @@
                 <div class="cell_fret_spacer"></div>
                 {% for i in "0123456789012" %}
                     {% if forloop.counter == 1 %}
-                        <div class="cell_fret">0</div>
+                        <div class="cell_fret marked">0<div class="fret-dot"></div></div>
                     {% elif forloop.counter == 2 %}
                         <div class="cell_fret">1</div>
                     {% elif forloop.counter == 3 %}
