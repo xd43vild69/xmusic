@@ -1,0 +1,302 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background-color: #0f0f14;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 12px;
+    color: #e0e0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+/* ── Layout container ───────────────────────────────────── */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 24px;
+    width: 100%;
+    height: 100vh;
+    max-width: 100vw;
+    overflow: hidden;
+}
+
+/* ── App header ─────────────────────────────────────────── */
+
+.app-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px 8px;
+    border-bottom: 1px solid #2a2a3a;
+    margin-bottom: 4px;
+}
+
+.app-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #e0e0f0;
+}
+
+.app-title span {
+    color: #4f8ef7;
+}
+
+.badge-group {
+    display: flex;
+    gap: 8px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #1e1e2e;
+    border: 1px solid #2a2a3a;
+    font-size: 11px;
+    font-weight: 500;
+    color: #9090b0;
+}
+
+.badge strong {
+    color: #e0e0f0;
+    font-weight: 600;
+}
+
+/* ── Fretboard box ──────────────────────────────────────── */
+
+.box {
+    width: 100%;
+    flex: 1;
+    background-color: #1a1a24;
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    min-height: 400px;
+    overflow: auto;
+}
+
+/* ── Matrix grid ────────────────────────────────────────── */
+
+.matrix {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 50px repeat(13, 1fr);
+    gap: 6px;
+    width: 100%;
+}
+
+/* ── Cells ──────────────────────────────────────────────── */
+
+.cell,
+.cell_first,
+.cell_fret_mark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 72px;
+    border-radius: 8px;
+}
+
+.cell {
+    width: 100%;
+    background-color: #22223a;
+}
+
+.cell_first {
+    width: 100%;
+    background-color: #1a1a2e;
+    font-size: 14px;
+    font-weight: 700;
+    color: #7080c0;
+    letter-spacing: 0.05em;
+}
+
+.cell_fret_mark {
+    width: 100%;
+    background-color: #22223a;
+    box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(79, 142, 247, 0.3);
+}
+
+/* ── Note dots ──────────────────────────────────────────── */
+
+.circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    background-color: #f5533d;
+    color: white;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: 0 0 16px rgba(245, 83, 61, 0.6);
+}
+
+.dot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #4f8ef7;
+    color: white;
+    border-radius: 50%;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 0 12px rgba(79, 142, 247, 0.4);
+}
+
+/* ── Fret numbers row ───────────────────────────────────── */
+
+.box2 {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fret-row {
+    display: grid;
+    grid-template-columns: 50px repeat(13, 1fr);
+    gap: 6px;
+    width: 100%;
+}
+
+.cell_fret {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 30px;
+    color: #50506a;
+    font-size: 13px;
+    font-weight: 600;
+    gap: 3px;
+}
+
+.cell_fret.marked {
+    color: #4f8ef7;
+}
+
+.fret-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #4f8ef7;
+    opacity: 0.6;
+}
+
+.cell_fret_spacer {
+    width: 100%;
+}
+
+/* ── Controls form ──────────────────────────────────────── */
+
+.box3 {
+    width: auto;
+    background-color: #1a1a24;
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    flex-shrink: 0;
+}
+
+.box3 form {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: nowrap;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-group label {
+    color: #6060a0;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+
+.form-group select {
+    appearance: none;
+    background-color: #22223a;
+    border: 1px solid #3a3a5a;
+    color: #e0e0f0;
+    padding: 6px 28px 6px 10px;
+    border-radius: 8px;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%234f8ef7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    transition: border-color 0.2s;
+    min-width: 110px;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #4f8ef7;
+    box-shadow: 0 0 0 2px rgba(79, 142, 247, 0.2);
+}
+
+.btn-primary {
+    background-color: #4f8ef7;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover {
+    background-color: #3a7de8;
+}
+
+.btn-primary:active {
+    transform: scale(0.97);
+}

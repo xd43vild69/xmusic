@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scale Tool</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- App header -->
+        <div class="app-header">
+            <h1 class="app-title">Scale<span>Tool</span></h1>
+            <div class="badge-group">
+                <span class="badge">Key <strong>{{ key|default:"A" }}</strong></span>
+                <span class="badge">{% if mode == 'chord' %}Chord{% else %}Scale{% endif %} <strong>{% if mode == 'chord' %}{{ chord|default:"Major"|title }}{% else %}{{ scale|default:"Mayor"|title }}{% endif %}</strong></span>
+                <span class="badge">
+                    {% if instrument == "bass4" %}Bass 4 (Standard){% elif instrument == "bass4_drop_d" %}Bass 4 (Drop D){% elif instrument == "bass4_drop_c" %}Bass 4 (Drop C){% elif instrument == "bass5" %}Bass 5{% elif instrument == "guitar_drop_d" %}Guitar (Drop D){% elif instrument == "guitar_half_step_down" %}Guitar (Half-Step Down){% elif instrument == "guitar_d_standard" %}Guitar (D Standard){% elif instrument == "guitar_drop_c" %}Guitar (Drop C){% elif instrument == "guitar_dadgad" %}Guitar (DADGAD){% elif instrument == "guitar_open_g" %}Guitar (Open G){% elif instrument == "guitar_open_d" %}Guitar (Open D){% else %}Guitar (Standard){% endif %}
+                </span>
+            </div>
+        </div>
+
+        <!-- Controls (moved up) -->
+        <div class="box3">
+            <form method="POST" action="{% url 'button_action' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="mode">Mode</label>
+                    <select name="mode" id="mode" onchange="this.form.submit()">
+                        <option value="scale" {% if mode == "scale" %}selected{% endif %}>Scale</option>
+                        <option value="chord" {% if mode == "chord" %}selected{% endif %}>Chord</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="key">Key</label>
+                    <select name="key" id="key" onchange="this.form.submit()">
+                        <option value="-1">—</option>
+                        <option value="A" {% if key == "A" %}selected{% endif %}>A</option>
+                        <option value="B" {% if key == "B" %}selected{% endif %}>B</option>
+                        <option value="C" {% if key == "C" %}selected{% endif %}>C</option>
+                        <option value="D" {% if key == "D" %}selected{% endif %}>D</option>
+                        <option value="E" {% if key == "E" %}selected{% endif %}>E</option>
+                        <option value="F" {% if key == "F" %}selected{% endif %}>F</option>
+                        <option value="G" {% if key == "G" %}selected{% endif %}>G</option>
+                    </select>
+                </div>
+                {% if mode == "chord" %}
+                <div class="form-group">
+                    <label for="chord">Type</label>
+                    <select name="chord" id="chord" onchange="this.form.submit()">
+                        <option value="major" {% if chord == "major" %}selected{% endif %}>Major</option>
+                        <option value="minor" {% if chord == "minor" %}selected{% endif %}>Minor</option>
+                        <option value="maj7" {% if chord == "maj7" %}selected{% endif %}>Maj7</option>
+                        <option value="min7" {% if chord == "min7" %}selected{% endif %}>Min7</option>
+                        <option value="dom7" {% if chord == "dom7" %}selected{% endif %}>Dom7</option>
+                        <option value="m7b5" {% if chord == "m7b5" %}selected{% endif %}>m7b5</option>
+                        <option value="dim" {% if chord == "dim" %}selected{% endif %}>Dim</option>
+                        <option value="aug" {% if chord == "aug" %}selected{% endif %}>Aug</option>
+                    </select>
+                </div>
+                <input type="hidden" name="scale" value="{{ scale|default:'mayor' }}">
+                {% else %}
+                <div class="form-group">
+                    <label for="scale">Scale</label>
+                    <select name="scale" id="scale" onchange="this.form.submit()">
+                        <option value="-1">—</option>
+                        <option value="mayor" {% if scale == "mayor" %}selected{% endif %}>Mayor</option>
+                        <option value="minor" {% if scale == "minor" %}selected{% endif %}>Minor</option>
+                        <option value="blues_minor" {% if scale == "blues_minor" %}selected{% endif %}>Blues Minor</option>
+                        <option value="blues_major" {% if scale == "blues_major" %}selected{% endif %}>Blues Mayor</option>
+                        <option value="mixolydian" {% if scale == "mixolydian" %}selected{% endif %}>Mixolydian</option>
+                        <option value="locrian" {% if scale == "locrian" %}selected{% endif %}>Locrian</option>
+                        <option value="octatonic" {% if scale == "octatonic" %}selected{% endif %}>Octatonic</option>
+                        <option value="dark_3" {% if scale == "dark_3" %}selected{% endif %}>Dark 3</option>
+                        <option value="dark_4" {% if scale == "dark_4" %}selected{% endif %}>Dark 4</option>
+                        <option value="dark_5" {% if scale == "dark_5" %}selected{% endif %}>Dark 5</option>
+                    </select>
+                </div>
+                <input type="hidden" name="chord" value="{{ chord|default:'major' }}">
+                {% endif %}
+                <div class="form-group">
+                    <label for="instrument">Instrument</label>
+                    <select name="instrument" id="instrument" onchange="this.form.submit()">
+                        <option value="-1">—</option>
+                        <option value="bass4" {% if instrument == "bass4" %}selected{% endif %}>Bass 4 (Standard)</option>
+                        <option value="bass4_drop_d" {% if instrument == "bass4_drop_d" %}selected{% endif %}>Bass 4 (Drop D)</option>
+                        <option value="bass4_drop_c" {% if instrument == "bass4_drop_c" %}selected{% endif %}>Bass 4 (Drop C)</option>
+                        <option value="bass5" {% if instrument == "bass5" %}selected{% endif %}>Bass 5</option>
+                        <option value="guitar" {% if instrument == "guitar" %}selected{% endif %}>Guitar (Standard)</option>
+                        <option value="guitar_drop_d" {% if instrument == "guitar_drop_d" %}selected{% endif %}>Guitar (Drop D)</option>
+                        <option value="guitar_half_step_down" {% if instrument == "guitar_half_step_down" %}selected{% endif %}>Guitar (Half-Step Down)</option>
+                        <option value="guitar_d_standard" {% if instrument == "guitar_d_standard" %}selected{% endif %}>Guitar (D Standard)</option>
+                        <option value="guitar_drop_c" {% if instrument == "guitar_drop_c" %}selected{% endif %}>Guitar (Drop C)</option>
+                        <option value="guitar_dadgad" {% if instrument == "guitar_dadgad" %}selected{% endif %}>Guitar (DADGAD)</option>
+                        <option value="guitar_open_g" {% if instrument == "guitar_open_g" %}selected{% endif %}>Guitar (Open G)</option>
+                        <option value="guitar_open_d" {% if instrument == "guitar_open_d" %}selected{% endif %}>Guitar (Open D)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="display_mode">View</label>
+                    <select name="display_mode" id="display_mode" onchange="this.form.submit()">
+                        <option value="degrees" {% if display_mode == "degrees" %}selected{% endif %}>Degrees</option>
+                        <option value="notes" {% if display_mode == "notes" %}selected{% endif %}>Notes</option>
+                        <option value="intervals" {% if display_mode == "intervals" %}selected{% endif %}>Intervals</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <!-- Fretboard -->
+        <div class="box">
+            <div class="matrix">
+                {% for row in matrix %}
+                <div class="row">
+                    <!-- String name in first column -->
+                    <div class="cell_first">
+                        {% if instrument == "bass4" %}
+                            {% if forloop.counter == 1 %}G
+                            {% elif forloop.counter == 2 %}D
+                            {% elif forloop.counter == 3 %}A
+                            {% elif forloop.counter == 4 %}E
+                            {% endif %}
+                        {% elif instrument == "bass5" %}
+                            {% if forloop.counter == 1 %}G
+                            {% elif forloop.counter == 2 %}D
+                            {% elif forloop.counter == 3 %}A
+                            {% elif forloop.counter == 4 %}E
+                            {% elif forloop.counter == 5 %}B
+                            {% endif %}
+                        {% else %}
+                            {% if forloop.counter == 1 %}E
+                            {% elif forloop.counter == 2 %}B
+                            {% elif forloop.counter == 3 %}G
+                            {% elif forloop.counter == 4 %}D
+                            {% elif forloop.counter == 5 %}A
+                            {% elif forloop.counter == 6 %}E
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <!-- Fret cells -->
+                    {% for cell in row %}
+                        <div class="{% if forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 10 or forloop.counter == 13 %}cell_fret_mark{% else %}cell{% endif %}">
+                            {% if cell.step == 1 %}
+                                <div class="circle" data-string="{{ forloop.parentloop.counter0 }}" data-fret="{{ forloop.counter0 }}">
+                                    {% if display_mode == "notes" %}{{ cell.name }}{% elif display_mode == "intervals" %}{{ cell.interval }}{% else %}{{ cell.step }}{% endif %}
+                                </div>
+                            {% elif cell.step != 0 %}
+                                <div class="dot" data-string="{{ forloop.parentloop.counter0 }}" data-fret="{{ forloop.counter0 }}">
+                                    {% if display_mode == "notes" %}{{ cell.name }}{% elif display_mode == "intervals" %}{{ cell.interval }}{% else %}{{ cell.step }}{% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Fret numbers -->
+        <div class="box2">
+            <div class="fret-row">
+                <div class="cell_fret_spacer"></div>
+                {% for i in "0123456789012" %}
+                    {% if forloop.counter == 1 %}
+                        <div class="cell_fret">0</div>
+                    {% elif forloop.counter == 2 %}
+                        <div class="cell_fret">1</div>
+                    {% elif forloop.counter == 3 %}
+                        <div class="cell_fret">2</div>
+                    {% elif forloop.counter == 4 %}
+                        <div class="cell_fret marked">3<div class="fret-dot"></div></div>
+                    {% elif forloop.counter == 5 %}
+                        <div class="cell_fret">4</div>
+                    {% elif forloop.counter == 6 %}
+                        <div class="cell_fret marked">5<div class="fret-dot"></div></div>
+                    {% elif forloop.counter == 7 %}
+                        <div class="cell_fret">6</div>
+                    {% elif forloop.counter == 8 %}
+                        <div class="cell_fret marked">7<div class="fret-dot"></div></div>
+                    {% elif forloop.counter == 9 %}
+                        <div class="cell_fret">8</div>
+                    {% elif forloop.counter == 10 %}
+                        <div class="cell_fret marked">9<div class="fret-dot"></div></div>
+                    {% elif forloop.counter == 11 %}
+                        <div class="cell_fret">10</div>
+                    {% elif forloop.counter == 12 %}
+                        <div class="cell_fret">11</div>
+                    {% elif forloop.counter == 13 %}
+                        <div class="cell_fret marked">12<div class="fret-dot fret-dot--double"></div></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{% static 'js/audio.js' %}"></script>
+</body>
+
+</html>
