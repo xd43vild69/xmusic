@@ -212,31 +212,10 @@
                 <div class="row">
                     <!-- String name in first column -->
                     <div class="cell_first">
-                        {% if instrument == "bass4" %}
-                            {% if forloop.counter == 1 %}G
-                            {% elif forloop.counter == 2 %}D
-                            {% elif forloop.counter == 3 %}A
-                            {% elif forloop.counter == 4 %}E
-                            {% endif %}
-                        {% elif instrument == "bass5" %}
-                            {% if forloop.counter == 1 %}G
-                            {% elif forloop.counter == 2 %}D
-                            {% elif forloop.counter == 3 %}A
-                            {% elif forloop.counter == 4 %}E
-                            {% elif forloop.counter == 5 %}B
-                            {% endif %}
-                        {% else %}
-                            {% if forloop.counter == 1 %}E
-                            {% elif forloop.counter == 2 %}B
-                            {% elif forloop.counter == 3 %}G
-                            {% elif forloop.counter == 4 %}D
-                            {% elif forloop.counter == 5 %}A
-                            {% elif forloop.counter == 6 %}E
-                            {% endif %}
-                        {% endif %}
+                        {{ row.name }}
                     </div>
                     <!-- Fret cells -->
-                    {% for cell in row %}
+                    {% for cell in row.cells %}
                         <div class="{% if forloop.counter == 1 or forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 10 or forloop.counter == 13 %}cell_fret_mark{% else %}cell{% endif %}">
                             {% if cell.step == 1 %}
                                 <div class="circle" data-string="{{ forloop.parentloop.counter0 }}" data-fret="{{ forloop.counter0 }}" data-interval="{{ cell.interval }}">
@@ -245,6 +224,9 @@
                             {% elif cell.step != 0 %}
                                 <div class="dot" data-string="{{ forloop.parentloop.counter0 }}" data-fret="{{ forloop.counter0 }}" data-interval="{{ cell.interval }}">
                                     {% if display_mode == "notes" %}{{ cell.name }}{% elif display_mode == "intervals" %}{{ cell.interval }}{% else %}{{ cell.step }}{% endif %}
+                                </div>
+                            {% else %}
+                                <div class="dot disabled" data-string="{{ forloop.parentloop.counter0 }}" data-fret="{{ forloop.counter0 }}" data-interval="{{ cell.interval }}">
                                 </div>
                             {% endif %}
                         </div>

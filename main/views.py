@@ -72,9 +72,12 @@ def home(request):
     managerTool = Manager(instrument)
     managerTool.set_strings_tool()
     managerTool.set_scale('A', pattern)
-    matrix = set_matrix(managerTool.tool_strings, instrument)
+    raw_matrix = set_matrix(managerTool.tool_strings, instrument)
+    string_names = list(reversed(managerTool.instrument))
+    matrix = [{'name': name, 'cells': row} for name, row in zip(string_names, raw_matrix)]
     return render(request, 'home.html', {
         'matrix': matrix, 
+        'string_names': string_names,
         'display_mode': 'degrees',
         'mode': 'scale',
         'scale': 'mayor',
@@ -135,9 +138,12 @@ def button_action(request):
     managerTool = Manager(tool)
     managerTool.set_strings_tool()
     managerTool.set_scale(selected_key, pattern)  
-    matrix = set_matrix(managerTool.tool_strings, tool)
+    raw_matrix = set_matrix(managerTool.tool_strings, tool)
+    string_names = list(reversed(managerTool.instrument))
+    matrix = [{'name': name, 'cells': row} for name, row in zip(string_names, raw_matrix)]
     return render(request, 'home.html', {
         'matrix': matrix, 
+        'string_names': string_names,
         'mode': selected_mode,
         'scale': selected_scale, 
         'chord': selected_chord,

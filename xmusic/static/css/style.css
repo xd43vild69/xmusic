@@ -246,6 +246,13 @@ body {
     transition: all 0.2s ease;
 }
 
+.dot.disabled {
+    background-color: transparent;
+    border: 2px solid #2a2a3a;
+    box-shadow: none;
+    color: transparent;
+}
+
 .circle.highlight-interval, .dot.highlight-interval {
     box-shadow: 0 0 25px #ffea00, inset 0 0 10px rgba(255, 234, 0, 0.5);
     transform: scale(1.15);
