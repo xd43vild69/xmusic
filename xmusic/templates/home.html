@@ -99,9 +99,8 @@
                             {% endif %}
                         {% endif %}
                     </div>
-                    <!-- Fret cells (skip forloop.first since we rendered string name above) -->
+                    <!-- Fret cells -->
                     {% for cell in row %}
-                        {% if not forloop.first %}
                         <div class="{% if forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 10 or forloop.counter == 13 %}cell_fret_mark{% else %}cell{% endif %}">
                             {% if cell.step == 1 %}
                                 <div class="circle">{{ cell.step }}</div>
@@ -109,7 +108,6 @@
                                 <div class="dot">{{ cell.step }}</div>
                             {% endif %}
                         </div>
-                        {% endif %}
                     {% endfor %}
                 </div>
                 {% endfor %}
@@ -128,21 +126,21 @@
                     {% elif forloop.counter == 3 %}
                         <div class="cell_fret">2</div>
                     {% elif forloop.counter == 4 %}
-                        <div class="cell_fret">3</div>
+                        <div class="cell_fret marked">3<div class="fret-dot"></div></div>
                     {% elif forloop.counter == 5 %}
-                        <div class="cell_fret marked">4<div class="fret-dot"></div></div>
+                        <div class="cell_fret">4</div>
                     {% elif forloop.counter == 6 %}
-                        <div class="cell_fret">5</div>
+                        <div class="cell_fret marked">5<div class="fret-dot"></div></div>
                     {% elif forloop.counter == 7 %}
-                        <div class="cell_fret marked">6<div class="fret-dot"></div></div>
+                        <div class="cell_fret">6</div>
                     {% elif forloop.counter == 8 %}
-                        <div class="cell_fret">7</div>
+                        <div class="cell_fret marked">7<div class="fret-dot"></div></div>
                     {% elif forloop.counter == 9 %}
-                        <div class="cell_fret marked">8<div class="fret-dot"></div></div>
+                        <div class="cell_fret">8</div>
                     {% elif forloop.counter == 10 %}
-                        <div class="cell_fret">9</div>
+                        <div class="cell_fret marked">9<div class="fret-dot"></div></div>
                     {% elif forloop.counter == 11 %}
-                        <div class="cell_fret marked">10<div class="fret-dot"></div></div>
+                        <div class="cell_fret">10</div>
                     {% elif forloop.counter == 12 %}
                         <div class="cell_fret">11</div>
                     {% elif forloop.counter == 13 %}

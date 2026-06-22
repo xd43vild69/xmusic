@@ -82,13 +82,8 @@ def set_matrix(tool_string, instrument):
     for row_index, ts in enumerate(reversed(tool_string)):
         interval = 1
         for col_index, n in enumerate(ts):
-
             if n.step != 0:            
                 matrix[row_index][col_index] = n
-                interval += 1
-
-            if interval > 8:
-                break
 
     return matrix
 

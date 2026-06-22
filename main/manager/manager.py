@@ -95,7 +95,7 @@ class Manager:
                 i = i + next_position
 
                 if i > 12:
-                    i = 12 - i + next_position
+                    i = i % 12
 
                 s[i].root = (s[i].name == note_key)
                 s[i].step = interval if interval < len(scale) else 1
