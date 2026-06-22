@@ -176,16 +176,17 @@
                     </select>
                 </div>
                 <input type="hidden" name="chord" value="{{ chord|default:'major' }}">
-                <input type="hidden" name="progression" value="{{ progression|default:'pop' }}">
+                <input type="hidden" name="progression" value="{{ progression|default:'pop-punk' }}">
                 {% else %}
                 <div class="form-group">
                     <label for="progression">Progression</label>
                     <select name="progression" id="progression" onchange="this.form.submit()">
-                        <option value="pop" {% if progression == "pop" %}selected{% endif %}>Pop (I-V-vi-IV)</option>
-                        <option value="blues" {% if progression == "blues" %}selected{% endif %}>Blues (I-IV-V)</option>
+                        <option value="pop-punk" {% if progression == "pop-punk" %}selected{% endif %}>Pop-Punk (I-V-vi-IV)</option>
+                        <option value="blues-metal" {% if progression == "blues-metal" %}selected{% endif %}>Blues-Metal (I-IV-V)</option>
                         <option value="jazz_ii_v_i" {% if progression == "jazz_ii_v_i" %}selected{% endif %}>Jazz (ii-V-I)</option>
-                        <option value="doo_wop" {% if progression == "doo_wop" %}selected{% endif %}>Doo-Wop (I-vi-IV-V)</option>
-                        <option value="andalusian" {% if progression == "andalusian" %}selected{% endif %}>Andalusian (i-VII-VI-V)</option>
+                        <option value="doo_wop-Retro" {% if progression == "doo_wop-Retro" %}selected{% endif %}>Doo-Wop-Retro (I-vi-IV-V)</option>
+                        <option value="andalusian-descenso" {% if progression == "andalusian-descenso" %}selected{% endif %}>Andalusian-Descenso (i-VII-VI-V)</option>
+                        <option value="epic_minor" {% if progression == "epic_minor" %}selected{% endif %}>Epic Minor (i-VI-III-VII)</option>
                     </select>
                 </div>
                 <input type="hidden" name="scale" value="{{ scale|default:'mayor' }}">

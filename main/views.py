@@ -58,16 +58,18 @@ def get_chord(selected_chord):
 
 def get_progression(selected_progression):
     progression = []
-    if selected_progression == "pop":
+    if selected_progression == "pop-punk":
         progression = [(0, 'I'), (7, 'V'), (9, 'vi'), (5, 'IV')]
-    elif selected_progression == "blues":
+    elif selected_progression == "blues-metal":
         progression = [(0, 'I'), (5, 'IV'), (0, 'I'), (7, 'V'), (5, 'IV'), (0, 'I')]
     elif selected_progression == "jazz_ii_v_i":
         progression = [(2, 'ii'), (7, 'V'), (0, 'I')]
-    elif selected_progression == "doo_wop":
+    elif selected_progression == "doo_wop-Retro":
         progression = [(0, 'I'), (9, 'vi'), (5, 'IV'), (7, 'V')]
-    elif selected_progression == "andalusian":
+    elif selected_progression == "andalusian-descenso":
         progression = [(0, 'i'), (10, 'VII'), (8, 'VI'), (7, 'V')]
+    elif selected_progression == "epic_minor":
+        progression = [(0, 'i'), (8, 'VI'), (3, 'III'), (10, 'VII')]
     return progression
 
 def get_strings(instrument):
@@ -96,7 +98,7 @@ def home(request):
         'mode': 'scale',
         'scale': 'mayor',
         'chord': 'major',
-        'progression': 'pop',
+        'progression': 'pop-punk',
         'key': 'A',
         'instrument': 'bass4'
     })
@@ -106,7 +108,7 @@ def button_action(request):
     selected_mode = "scale"
     selected_scale = "mayor"
     selected_chord = "major"
-    selected_progression = "pop"
+    selected_progression = "pop-punk"
     selected_key = "A"
     selected_instrument = "guitar"
     selected_display_mode = "degrees"
@@ -115,7 +117,7 @@ def button_action(request):
         selected_mode = request.POST.get('mode') if request.POST.get('mode') else "scale"
         selected_scale = request.POST.get('scale') if request.POST.get('scale') != "-1" else "mayor"
         selected_chord = request.POST.get('chord') if request.POST.get('chord') != "-1" else "major"
-        selected_progression = request.POST.get('progression') if request.POST.get('progression') != "-1" else "pop"
+        selected_progression = request.POST.get('progression') if request.POST.get('progression') != "-1" else "pop-punk"
         selected_key = request.POST.get('key') if request.POST.get('key') != "-1" else "A"
         selected_instrument = request.POST.get('instrument') if request.POST.get('instrument') != "-1" else "guitar"
         selected_display_mode = request.POST.get('display_mode') if request.POST.get('display_mode') else "degrees"
