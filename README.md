@@ -4,7 +4,7 @@
 
 ## Features
 
-- **Modes**: Choose between exploring **Scales** or **Chords**.
+- **Modes**: Choose between exploring **Scales**, **Chords**, or **Progressions**.
 - **Keys**: Supports all natural musical keys (A, B, C, D, E, F, G).
 - **Scales**: Explore a wide variety of scales, including:
   - Major, Minor
@@ -15,6 +15,13 @@
   - Major, Minor
   - Maj7, Min7, Dom7
   - m7b5, Diminished, Augmented
+- **Progressions (Root Tracking)**: Visually trace harmonic sequences on the fretboard. Available progressions:
+  - Pop-Punk (I-V-vi-IV)
+  - Blues-Metal (I-IV-V)
+  - Jazz (ii-V-I)
+  - Doo-Wop-Retro (I-vi-IV-V)
+  - Andalusian-Descenso (i-VII-VI-V)
+  - Epic Minor (i-VI-III-VII)
 - **Instruments and Tunings**: 
   - **Guitar**: Standard, Drop D, Half-Step Down, D Standard, Drop C, DADGAD, Open G, Open D
   - **Bass (4-String)**: Standard, Drop D, Drop C
