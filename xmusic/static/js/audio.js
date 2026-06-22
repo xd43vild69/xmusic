@@ -183,24 +183,42 @@ document.addEventListener("DOMContentLoaded", () => {
             const roots = document.querySelectorAll('.circle[data-interval="1"]');
             if (roots.length === 0) return;
             
-            // Usamos una tónica que esté en las cuerdas más graves (últimos elementos en el DOM)
-            const rootEl = roots[roots.length - 1]; 
+            // Usamos una tónica del medio para no ser ni muy aguda ni muy grave
+            const middleIndex = Math.floor(roots.length / 2);
+            const rootEl = roots[middleIndex]; 
             const rootString = parseInt(rootEl.getAttribute('data-string'));
             const rootFret = parseInt(rootEl.getAttribute('data-fret'));
+            const approxRootPitch = -rootString * 5 + rootFret;
 
             const intervalElements = document.querySelectorAll(`.circle[data-interval="${interval}"], .dot[data-interval="${interval}"]`);
             if (intervalElements.length === 0) return;
 
-            // Elegimos un elemento de intervalo. Al tomar el [0], normalmente es de cuerdas agudas.
-            let intervalEl = intervalElements[0];
-            
-            // Si el intervalo es la octava (1), tratar de que no sea la misma tónica
-            if (interval === "1" && intervalElements.length > 1) {
-                intervalEl = Array.from(intervalElements).find(el => el !== rootEl) || intervalEl;
-            }
+            // Elegimos un intervalo que esté lo más cerca posible de la tónica (idealmente un poco más agudo)
+            let bestIntervalEl = intervalElements[0];
+            let minPitchDiff = Infinity;
 
-            const intString = parseInt(intervalEl.getAttribute('data-string'));
-            const intFret = parseInt(intervalEl.getAttribute('data-fret'));
+            intervalElements.forEach(el => {
+                // Si es la octava, preferimos no usar la misma nota exacta
+                if (interval === "1" && el === rootEl && intervalElements.length > 1) return;
+                
+                const s = parseInt(el.getAttribute('data-string'));
+                const f = parseInt(el.getAttribute('data-fret'));
+                const approxPitch = -s * 5 + f;
+                
+                let diff = approxPitch - approxRootPitch;
+                // Preferimos que sea más agudo (positivo), penalizamos si es más grave
+                if (diff < 0) {
+                    diff = Math.abs(diff) + 100;
+                }
+                
+                if (diff < minPitchDiff) {
+                    minPitchDiff = diff;
+                    bestIntervalEl = el;
+                }
+            });
+
+            const intString = parseInt(bestIntervalEl.getAttribute('data-string'));
+            const intFret = parseInt(bestIntervalEl.getAttribute('data-fret'));
 
             // Reproducir tónica
             AudioSystem.play(currentInstrument, rootString, rootFret);
