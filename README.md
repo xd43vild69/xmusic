@@ -23,6 +23,13 @@
   - Degrees (Scale steps)
   - Notes (Actual musical notes, e.g., A#, C)
   - Intervals
+- **Interactive Audio & Playback**: 
+  - Click on any fret/dot on the fretboard to play the exact pitch for that note in the selected tuning.
+  - Synthesized audio playback using the Web Audio API with realistic ADSR envelopes.
+- **Interval Codex**: 
+  - Hover over specific intervals in the Codex to highlight matching positions on the fretboard.
+  - Click an interval to hear the acoustic relation (plays the root note followed by the selected interval) and read a descriptive breakdown of its emotional and mathematical characteristics.
+- **Dynamic Fretboard Alignment**: The visual fretboard completely adapts its row headers (string names) to precisely match the selected alternative tuning dynamically.
 
 ## Architecture Overview
 
