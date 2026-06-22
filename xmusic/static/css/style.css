@@ -55,6 +55,100 @@ body {
     color: #4f8ef7;
 }
 
+/* ── Interval Codex ─────────────────────────────────────── */
+
+.interval-codex {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+
+.interval-item {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #1e1e2e;
+    border: 1px solid #2a2a3a;
+    transition: all 0.2s ease;
+}
+
+.interval-item:hover {
+    background: #4f8ef7;
+    border-color: #4f8ef7;
+    transform: translateY(-2px);
+}
+
+.interval-symbol {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e0e0f0;
+}
+
+.interval-item:hover .interval-symbol {
+    color: #ffffff;
+}
+
+.interval-tooltip {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    background: #1e1e2e;
+    border: 1px solid #4f8ef7;
+    border-radius: 8px;
+    padding: 12px;
+    color: #b0b0c0;
+    font-size: 13px;
+    line-height: 1.4;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 100;
+    pointer-events: none;
+    text-align: left;
+}
+
+/* Tooltip arrow */
+.interval-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent #4f8ef7 transparent;
+}
+
+.interval-item:hover .interval-tooltip,
+.interval-item:focus .interval-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.interval-tooltip strong {
+    color: #e0e0f0;
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+.interval-tooltip .text-muted {
+    color: #4f8ef7;
+    font-size: 12px;
+    display: inline-block;
+    margin-bottom: 8px;
+}
 
 /* ── Fretboard box ──────────────────────────────────────── */
 
