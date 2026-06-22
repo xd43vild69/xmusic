@@ -14,6 +14,10 @@ def get_scale(selected_scale):
         scale = ['H', 'W', 'W', 'H', 'W', 'W', 'W', 'H']
     elif selected_scale == "minor":
         scale = ['W', 'W', 'H', 'W', 'W', 'H', 'W', 'W']
+    elif selected_scale == "blues_minor":
+        scale = ['X', 'WH', 'W', 'H', 'H', 'WH', 'W']
+    elif selected_scale == "blues_major":
+        scale = ['X', 'W', 'H', 'H', 'WH', 'W', 'WH']
     elif selected_scale == "mixolydian":
         scale = ['W', 'W', 'W', 'H', 'W', 'W', 'H', 'W']
     elif selected_scale == "locrian":
