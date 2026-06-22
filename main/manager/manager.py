@@ -141,3 +141,30 @@ class Manager:
                 if s[i].name != note_key and i == 12:  # restart array
                     i = 0
                     s[i].step = interval if interval < 8 else 1
+
+    def set_progression(self, note_key, progression):
+        for s in self.tool_strings:
+            index_key_note = next(
+                (index for index, note in enumerate(s) if note.name == note_key), -1)
+
+            # Reset all notes first
+            for j in range(13):
+                s[j].step = 0
+                s[j].interval = ''
+                s[j].root = False
+
+            # For each chord in the progression, mark its root
+            for step_number, (semitone_offset, roman_label) in enumerate(progression, start=1):
+                chord_root_index = (index_key_note + semitone_offset) % 12
+                for j in range(13):
+                    if j % 12 == chord_root_index:
+                        # If a note acts as the root for multiple chords, append the label
+                        if s[j].interval:
+                            # Avoid duplicate labels if the progression repeats the same chord
+                            if roman_label not in s[j].interval.split(', '):
+                                s[j].interval += f", {roman_label}"
+                        else:
+                            s[j].interval = roman_label
+                        
+                        s[j].step = step_number
+                        s[j].root = (semitone_offset == 0)

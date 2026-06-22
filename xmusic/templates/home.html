@@ -127,6 +127,7 @@
                     <select name="mode" id="mode" onchange="this.form.submit()">
                         <option value="scale" {% if mode == "scale" %}selected{% endif %}>Scale</option>
                         <option value="chord" {% if mode == "chord" %}selected{% endif %}>Chord</option>
+                        <option value="progression" {% if mode == "progression" %}selected{% endif %}>Progression</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -157,7 +158,7 @@
                     </select>
                 </div>
                 <input type="hidden" name="scale" value="{{ scale|default:'mayor' }}">
-                {% else %}
+                {% elif mode == "scale" %}
                 <div class="form-group">
                     <label for="scale">Scale</label>
                     <select name="scale" id="scale" onchange="this.form.submit()">
@@ -174,6 +175,20 @@
                         <option value="dark_5" {% if scale == "dark_5" %}selected{% endif %}>Dark 5</option>
                     </select>
                 </div>
+                <input type="hidden" name="chord" value="{{ chord|default:'major' }}">
+                <input type="hidden" name="progression" value="{{ progression|default:'pop' }}">
+                {% else %}
+                <div class="form-group">
+                    <label for="progression">Progression</label>
+                    <select name="progression" id="progression" onchange="this.form.submit()">
+                        <option value="pop" {% if progression == "pop" %}selected{% endif %}>Pop (I-V-vi-IV)</option>
+                        <option value="blues" {% if progression == "blues" %}selected{% endif %}>Blues (I-IV-V)</option>
+                        <option value="jazz_ii_v_i" {% if progression == "jazz_ii_v_i" %}selected{% endif %}>Jazz (ii-V-I)</option>
+                        <option value="doo_wop" {% if progression == "doo_wop" %}selected{% endif %}>Doo-Wop (I-vi-IV-V)</option>
+                        <option value="andalusian" {% if progression == "andalusian" %}selected{% endif %}>Andalusian (i-VII-VI-V)</option>
+                    </select>
+                </div>
+                <input type="hidden" name="scale" value="{{ scale|default:'mayor' }}">
                 <input type="hidden" name="chord" value="{{ chord|default:'major' }}">
                 {% endif %}
                 <div class="form-group">

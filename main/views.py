@@ -56,6 +56,20 @@ def get_chord(selected_chord):
         chord = ['X', '4', '4', '4']
     return chord
 
+def get_progression(selected_progression):
+    progression = []
+    if selected_progression == "pop":
+        progression = [(0, 'I'), (7, 'V'), (9, 'vi'), (5, 'IV')]
+    elif selected_progression == "blues":
+        progression = [(0, 'I'), (5, 'IV'), (0, 'I'), (7, 'V'), (5, 'IV'), (0, 'I')]
+    elif selected_progression == "jazz_ii_v_i":
+        progression = [(2, 'ii'), (7, 'V'), (0, 'I')]
+    elif selected_progression == "doo_wop":
+        progression = [(0, 'I'), (9, 'vi'), (5, 'IV'), (7, 'V')]
+    elif selected_progression == "andalusian":
+        progression = [(0, 'i'), (10, 'VII'), (8, 'VI'), (7, 'V')]
+    return progression
+
 def get_strings(instrument):
     strings = 6
     if instrument == Instrument.Bass4 or instrument == Instrument.Bass4DropD or instrument == Instrument.Bass4DropC:
@@ -82,6 +96,7 @@ def home(request):
         'mode': 'scale',
         'scale': 'mayor',
         'chord': 'major',
+        'progression': 'pop',
         'key': 'A',
         'instrument': 'bass4'
     })
@@ -91,6 +106,7 @@ def button_action(request):
     selected_mode = "scale"
     selected_scale = "mayor"
     selected_chord = "major"
+    selected_progression = "pop"
     selected_key = "A"
     selected_instrument = "guitar"
     selected_display_mode = "degrees"
@@ -99,6 +115,7 @@ def button_action(request):
         selected_mode = request.POST.get('mode') if request.POST.get('mode') else "scale"
         selected_scale = request.POST.get('scale') if request.POST.get('scale') != "-1" else "mayor"
         selected_chord = request.POST.get('chord') if request.POST.get('chord') != "-1" else "major"
+        selected_progression = request.POST.get('progression') if request.POST.get('progression') != "-1" else "pop"
         selected_key = request.POST.get('key') if request.POST.get('key') != "-1" else "A"
         selected_instrument = request.POST.get('instrument') if request.POST.get('instrument') != "-1" else "guitar"
         selected_display_mode = request.POST.get('display_mode') if request.POST.get('display_mode') else "degrees"
@@ -132,12 +149,18 @@ def button_action(request):
 
     if selected_mode == "scale":
         pattern = get_scale(selected_scale)
-    else:
+    elif selected_mode == "chord":
         pattern = get_chord(selected_chord)
+    else:
+        pattern = get_progression(selected_progression)
 
     managerTool = Manager(tool)
     managerTool.set_strings_tool()
-    managerTool.set_scale(selected_key, pattern)  
+    
+    if selected_mode == "progression":
+        managerTool.set_progression(selected_key, pattern)
+    else:
+        managerTool.set_scale(selected_key, pattern)  
     raw_matrix = set_matrix(managerTool.tool_strings, tool)
     string_names = list(reversed(managerTool.instrument))
     matrix = [{'name': name, 'cells': row} for name, row in zip(string_names, raw_matrix)]
@@ -147,6 +170,7 @@ def button_action(request):
         'mode': selected_mode,
         'scale': selected_scale, 
         'chord': selected_chord,
+        'progression': selected_progression,
         'key': selected_key, 
         'instrument': selected_instrument, 
         'display_mode': selected_display_mode
