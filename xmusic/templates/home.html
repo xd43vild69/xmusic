@@ -10,93 +10,148 @@
 </head>
 
 <body>
-    
+
     <div class="container">
-        <div class="box2">
-            <div class="header">key: {{key}}</div>
-            <div class="header">scale: {{scale}}</div>
+
+        <!-- App header -->
+        <div class="app-header">
+            <h1 class="app-title">Scale<span>Tool</span></h1>
+            <div class="badge-group">
+                <span class="badge">Key <strong>{{ key|default:"A" }}</strong></span>
+                <span class="badge">Scale <strong>{{ scale|default:"Mayor" }}</strong></span>
+                <span class="badge">
+                    {% if instrument == "bass4" %}Bass 4{% elif instrument == "bass5" %}Bass 5{% else %}Guitar{% endif %}
+                </span>
+            </div>
         </div>
+
+        <!-- Fretboard -->
         <div class="box">
             <div class="matrix">
                 {% for row in matrix %}
                 <div class="row">
+                    <!-- String name in first column -->
+                    <div class="cell_first">
+                        {% if instrument == "bass4" %}
+                            {% if forloop.counter == 1 %}G
+                            {% elif forloop.counter == 2 %}D
+                            {% elif forloop.counter == 3 %}A
+                            {% elif forloop.counter == 4 %}E
+                            {% endif %}
+                        {% elif instrument == "bass5" %}
+                            {% if forloop.counter == 1 %}G
+                            {% elif forloop.counter == 2 %}D
+                            {% elif forloop.counter == 3 %}A
+                            {% elif forloop.counter == 4 %}E
+                            {% elif forloop.counter == 5 %}B
+                            {% endif %}
+                        {% else %}
+                            {% if forloop.counter == 1 %}E
+                            {% elif forloop.counter == 2 %}B
+                            {% elif forloop.counter == 3 %}G
+                            {% elif forloop.counter == 4 %}D
+                            {% elif forloop.counter == 5 %}A
+                            {% elif forloop.counter == 6 %}E
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <!-- Fret cells (skip forloop.first since we rendered string name above) -->
                     {% for cell in row %}
-                        <div class="{% if forloop.first %} cell_first {% elif forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 10 or forloop.counter == 13 %} cell_fret_mark {% else %} cell {% endif %}">
+                        {% if not forloop.first %}
+                        <div class="{% if forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 10 or forloop.counter == 13 %}cell_fret_mark{% else %}cell{% endif %}">
                             {% if cell.step == 1 %}
-                                <div class="circle">{{ cell.step }} </div> 
-                            {% elif cell.step == 0 %}
-                                <div></div> 
-                            {% else %}
-                                <div>{{ cell.step }} </div> 
-                            {% endif %}                            
+                                <div class="circle">{{ cell.step }}</div>
+                            {% elif cell.step != 0 %}
+                                <div class="dot">{{ cell.step }}</div>
+                            {% endif %}
                         </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
                 {% endfor %}
             </div>
-
         </div>
+
+        <!-- Fret numbers -->
         <div class="box2">
-            <div class="row">            
-                <div class="cell_fret">0</div>
-                <div class="cell_fret">1</div>
-                <div class="cell_fret">2</div>
-                <div class="cell_fret">3</div>
-                <div class="cell_fret">4</div>
-                <div class="cell_fret">5</div>
-                <div class="cell_fret">6</div>
-                <div class="cell_fret">7</div>
-                <div class="cell_fret">8</div>
-                <div class="cell_fret">9</div>
-                <div class="cell_fret">10</div>
-                <div class="cell_fret">11</div>
-                <div class="cell_fret">12</div>
+            <div class="fret-row">
+                <div class="cell_fret_spacer"></div>
+                {% for i in "0123456789012" %}
+                    {% if forloop.counter == 1 %}
+                        <div class="cell_fret">0</div>
+                    {% elif forloop.counter == 2 %}
+                        <div class="cell_fret">1</div>
+                    {% elif forloop.counter == 3 %}
+                        <div class="cell_fret">2</div>
+                    {% elif forloop.counter == 4 %}
+                        <div class="cell_fret">3</div>
+                    {% elif forloop.counter == 5 %}
+                        <div class="cell_fret marked">4<div class="fret-dot"></div></div>
+                    {% elif forloop.counter == 6 %}
+                        <div class="cell_fret">5</div>
+                    {% elif forloop.counter == 7 %}
+                        <div class="cell_fret marked">6<div class="fret-dot"></div></div>
+                    {% elif forloop.counter == 8 %}
+                        <div class="cell_fret">7</div>
+                    {% elif forloop.counter == 9 %}
+                        <div class="cell_fret marked">8<div class="fret-dot"></div></div>
+                    {% elif forloop.counter == 10 %}
+                        <div class="cell_fret">9</div>
+                    {% elif forloop.counter == 11 %}
+                        <div class="cell_fret marked">10<div class="fret-dot"></div></div>
+                    {% elif forloop.counter == 12 %}
+                        <div class="cell_fret">11</div>
+                    {% elif forloop.counter == 13 %}
+                        <div class="cell_fret marked">12<div class="fret-dot fret-dot--double"></div></div>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
-        
-        <div class="box3"> <!-- python manage.py runserver  <div class="cell">{{ cell }}</div> -->            
-                <!-- Form with a button that sends a POST request -->
-                <form method="POST" action="{% url 'button_action' %}">
-                    {% csrf_token %}
-                    <div>
-                        <label for="key" style="color:white">Key:</label>\
-                        <select name="key" id="key">
-                            <option value="-1"></option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                            <option value="D">D</option>
-                            <option value="E">E</option>
-                            <option value="F">F</option>
-                            <option value="G">G</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="scale" style="color:white">Scale:</label>
-                        <select name="scale" id="scale">
-                            <option value="-1"></option>
-                            <option value="mayor">Mayor</option>
-                            <option value="minor">Minor</option>
-                            <option value="mixolydian">mixolydian</option>                       
-                            <option value="locrian">Locrian</option>
-                            <option value="octatonic">Octatonic</option>
-                            <option value="dark_3">dark_3</option>
-                            <option value="dark_4">dark_4</option>
-                            <option value="dark_5">dark_5</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="tool" style="color:white">Tool:</label>
-                        <select name="instrument" id="instrument">
-                            <option value="-1"></option>
-                            <option value="bass4">Bass 4</option>
-                            <option value="bass5">Bass 5</option>
-                            <option value="guitar">Guitar</option>
-                        </select>
-                    </div>
-                    <button type="submit">Update</button>
-                </form>
+
+        <!-- Controls -->
+        <div class="box3">
+            <form method="POST" action="{% url 'button_action' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="key">Key</label>
+                    <select name="key" id="key">
+                        <option value="-1">—</option>
+                        <option value="A" {% if key == "A" %}selected{% endif %}>A</option>
+                        <option value="B" {% if key == "B" %}selected{% endif %}>B</option>
+                        <option value="C" {% if key == "C" %}selected{% endif %}>C</option>
+                        <option value="D" {% if key == "D" %}selected{% endif %}>D</option>
+                        <option value="E" {% if key == "E" %}selected{% endif %}>E</option>
+                        <option value="F" {% if key == "F" %}selected{% endif %}>F</option>
+                        <option value="G" {% if key == "G" %}selected{% endif %}>G</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="scale">Scale</label>
+                    <select name="scale" id="scale">
+                        <option value="-1">—</option>
+                        <option value="mayor" {% if scale == "mayor" %}selected{% endif %}>Mayor</option>
+                        <option value="minor" {% if scale == "minor" %}selected{% endif %}>Minor</option>
+                        <option value="mixolydian" {% if scale == "mixolydian" %}selected{% endif %}>Mixolydian</option>
+                        <option value="locrian" {% if scale == "locrian" %}selected{% endif %}>Locrian</option>
+                        <option value="octatonic" {% if scale == "octatonic" %}selected{% endif %}>Octatonic</option>
+                        <option value="dark_3" {% if scale == "dark_3" %}selected{% endif %}>Dark 3</option>
+                        <option value="dark_4" {% if scale == "dark_4" %}selected{% endif %}>Dark 4</option>
+                        <option value="dark_5" {% if scale == "dark_5" %}selected{% endif %}>Dark 5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="instrument">Instrument</label>
+                    <select name="instrument" id="instrument">
+                        <option value="-1">—</option>
+                        <option value="bass4" {% if instrument == "bass4" %}selected{% endif %}>Bass 4</option>
+                        <option value="bass5" {% if instrument == "bass5" %}selected{% endif %}>Bass 5</option>
+                        <option value="guitar" {% if instrument == "guitar" %}selected{% endif %}>Guitar</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Update</button>
+            </form>
         </div>
+
     </div>
 
 </body>
