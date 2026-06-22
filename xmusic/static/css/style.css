@@ -7,7 +7,7 @@
 }
 
 body {
-    min-height: 100vh;
+    height: 100vh;
     background-color: #0f0f14;
     font-family: 'Inter', Arial, sans-serif;
     font-size: 12px;
@@ -15,7 +15,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-x: auto;
+    padding: 0;
 }
 
 /* ── Layout container ───────────────────────────────────── */
@@ -25,8 +25,11 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    padding: 32px 24px;
+    padding: 16px 24px;
     width: fit-content;
+    height: 100vh;
+    max-width: 100vw;
+    overflow: hidden;
 }
 
 /* ── App header ─────────────────────────────────────────── */
@@ -78,14 +81,17 @@ body {
 /* ── Fretboard box ──────────────────────────────────────── */
 
 .box {
-    width: 100%;
+    width: auto;
+    flex: 1;
     background-color: #1a1a24;
     border: 1px solid #2a2a3a;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 16px;
+    padding: 24px 16px;
+    min-height: 400px;
+    overflow: auto;
 }
 
 /* ── Matrix grid ────────────────────────────────────────── */
@@ -98,8 +104,8 @@ body {
 
 .row {
     display: grid;
-    grid-template-columns: 36px repeat(12, 46px);
-    gap: 4px;
+    grid-template-columns: 50px repeat(12, 70px);
+    gap: 6px;
 }
 
 /* ── Cells ──────────────────────────────────────────────── */
@@ -110,26 +116,26 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 40px;
-    border-radius: 6px;
+    height: 72px;
+    border-radius: 8px;
 }
 
 .cell {
-    width: 46px;
+    width: 70px;
     background-color: #22223a;
 }
 
 .cell_first {
-    width: 36px;
+    width: 50px;
     background-color: #1a1a2e;
-    font-size: 11px;
-    font-weight: 600;
-    color: #6060a0;
-    letter-spacing: 0.03em;
+    font-size: 14px;
+    font-weight: 700;
+    color: #7080c0;
+    letter-spacing: 0.05em;
 }
 
 .cell_fret_mark {
-    width: 46px;
+    width: 70px;
     background-color: #1a1a2e;
 }
 
@@ -139,28 +145,28 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 34px;
-    height: 34px;
+    width: 56px;
+    height: 56px;
     background-color: #f5533d;
     color: white;
     border-radius: 50%;
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 700;
-    box-shadow: 0 0 10px rgba(245, 83, 61, 0.5);
+    box-shadow: 0 0 16px rgba(245, 83, 61, 0.6);
 }
 
 .dot {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     background-color: #4f8ef7;
     color: white;
     border-radius: 50%;
-    font-size: 11px;
+    font-size: 15px;
     font-weight: 600;
-    box-shadow: 0 0 8px rgba(79, 142, 247, 0.35);
+    box-shadow: 0 0 12px rgba(79, 142, 247, 0.4);
 }
 
 /* ── Fret numbers row ───────────────────────────────────── */
@@ -176,8 +182,8 @@ body {
 
 .fret-row {
     display: grid;
-    grid-template-columns: 36px repeat(12, 46px);
-    gap: 4px;
+    grid-template-columns: 50px repeat(12, 70px);
+    gap: 6px;
 }
 
 .cell_fret {
@@ -185,12 +191,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 46px;
-    height: 24px;
+    width: 70px;
+    height: 30px;
     color: #50506a;
-    font-size: 11px;
-    font-weight: 500;
-    gap: 2px;
+    font-size: 13px;
+    font-weight: 600;
+    gap: 3px;
 }
 
 .cell_fret.marked {
@@ -206,27 +212,28 @@ body {
 }
 
 .cell_fret_spacer {
-    width: 36px;
+    width: 50px;
 }
 
 /* ── Controls form ──────────────────────────────────────── */
 
 .box3 {
-    width: 100%;
+    width: auto;
     background-color: #1a1a24;
     border: 1px solid #2a2a3a;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px 24px;
+    padding: 12px 20px;
+    flex-shrink: 0;
 }
 
 .box3 form {
     display: flex;
     align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
+    gap: 16px;
+    flex-wrap: nowrap;
 }
 
 .form-group {

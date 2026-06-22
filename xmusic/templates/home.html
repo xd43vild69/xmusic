@@ -25,6 +25,50 @@
             </div>
         </div>
 
+        <!-- Controls (moved up) -->
+        <div class="box3">
+            <form method="POST" action="{% url 'button_action' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="key">Key</label>
+                    <select name="key" id="key">
+                        <option value="-1">—</option>
+                        <option value="A" {% if key == "A" %}selected{% endif %}>A</option>
+                        <option value="B" {% if key == "B" %}selected{% endif %}>B</option>
+                        <option value="C" {% if key == "C" %}selected{% endif %}>C</option>
+                        <option value="D" {% if key == "D" %}selected{% endif %}>D</option>
+                        <option value="E" {% if key == "E" %}selected{% endif %}>E</option>
+                        <option value="F" {% if key == "F" %}selected{% endif %}>F</option>
+                        <option value="G" {% if key == "G" %}selected{% endif %}>G</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="scale">Scale</label>
+                    <select name="scale" id="scale">
+                        <option value="-1">—</option>
+                        <option value="mayor" {% if scale == "mayor" %}selected{% endif %}>Mayor</option>
+                        <option value="minor" {% if scale == "minor" %}selected{% endif %}>Minor</option>
+                        <option value="mixolydian" {% if scale == "mixolydian" %}selected{% endif %}>Mixolydian</option>
+                        <option value="locrian" {% if scale == "locrian" %}selected{% endif %}>Locrian</option>
+                        <option value="octatonic" {% if scale == "octatonic" %}selected{% endif %}>Octatonic</option>
+                        <option value="dark_3" {% if scale == "dark_3" %}selected{% endif %}>Dark 3</option>
+                        <option value="dark_4" {% if scale == "dark_4" %}selected{% endif %}>Dark 4</option>
+                        <option value="dark_5" {% if scale == "dark_5" %}selected{% endif %}>Dark 5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="instrument">Instrument</label>
+                    <select name="instrument" id="instrument">
+                        <option value="-1">—</option>
+                        <option value="bass4" {% if instrument == "bass4" %}selected{% endif %}>Bass 4</option>
+                        <option value="bass5" {% if instrument == "bass5" %}selected{% endif %}>Bass 5</option>
+                        <option value="guitar" {% if instrument == "guitar" %}selected{% endif %}>Guitar</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Update</button>
+            </form>
+        </div>
+
         <!-- Fretboard -->
         <div class="box">
             <div class="matrix">
@@ -106,50 +150,6 @@
                     {% endif %}
                 {% endfor %}
             </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="box3">
-            <form method="POST" action="{% url 'button_action' %}">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="key">Key</label>
-                    <select name="key" id="key">
-                        <option value="-1">—</option>
-                        <option value="A" {% if key == "A" %}selected{% endif %}>A</option>
-                        <option value="B" {% if key == "B" %}selected{% endif %}>B</option>
-                        <option value="C" {% if key == "C" %}selected{% endif %}>C</option>
-                        <option value="D" {% if key == "D" %}selected{% endif %}>D</option>
-                        <option value="E" {% if key == "E" %}selected{% endif %}>E</option>
-                        <option value="F" {% if key == "F" %}selected{% endif %}>F</option>
-                        <option value="G" {% if key == "G" %}selected{% endif %}>G</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="scale">Scale</label>
-                    <select name="scale" id="scale">
-                        <option value="-1">—</option>
-                        <option value="mayor" {% if scale == "mayor" %}selected{% endif %}>Mayor</option>
-                        <option value="minor" {% if scale == "minor" %}selected{% endif %}>Minor</option>
-                        <option value="mixolydian" {% if scale == "mixolydian" %}selected{% endif %}>Mixolydian</option>
-                        <option value="locrian" {% if scale == "locrian" %}selected{% endif %}>Locrian</option>
-                        <option value="octatonic" {% if scale == "octatonic" %}selected{% endif %}>Octatonic</option>
-                        <option value="dark_3" {% if scale == "dark_3" %}selected{% endif %}>Dark 3</option>
-                        <option value="dark_4" {% if scale == "dark_4" %}selected{% endif %}>Dark 4</option>
-                        <option value="dark_5" {% if scale == "dark_5" %}selected{% endif %}>Dark 5</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="instrument">Instrument</label>
-                    <select name="instrument" id="instrument">
-                        <option value="-1">—</option>
-                        <option value="bass4" {% if instrument == "bass4" %}selected{% endif %}>Bass 4</option>
-                        <option value="bass5" {% if instrument == "bass5" %}selected{% endif %}>Bass 5</option>
-                        <option value="guitar" {% if instrument == "guitar" %}selected{% endif %}>Guitar</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-primary">Update</button>
-            </form>
         </div>
 
     </div>
