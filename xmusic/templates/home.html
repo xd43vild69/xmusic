@@ -67,6 +67,14 @@
                         <option value="guitar" {% if instrument == "guitar" %}selected{% endif %}>Guitar</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="display_mode">View</label>
+                    <select name="display_mode" id="display_mode" onchange="this.form.submit()">
+                        <option value="degrees" {% if display_mode == "degrees" %}selected{% endif %}>Degrees</option>
+                        <option value="notes" {% if display_mode == "notes" %}selected{% endif %}>Notes</option>
+                        <option value="intervals" {% if display_mode == "intervals" %}selected{% endif %}>Intervals</option>
+                    </select>
+                </div>
             </form>
         </div>
 
@@ -104,9 +112,13 @@
                     {% for cell in row %}
                         <div class="{% if forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 10 or forloop.counter == 13 %}cell_fret_mark{% else %}cell{% endif %}">
                             {% if cell.step == 1 %}
-                                <div class="circle">{{ cell.step }}</div>
+                                <div class="circle">
+                                    {% if display_mode == "notes" %}{{ cell.name }}{% elif display_mode == "intervals" %}{{ cell.interval }}{% else %}{{ cell.step }}{% endif %}
+                                </div>
                             {% elif cell.step != 0 %}
-                                <div class="dot">{{ cell.step }}</div>
+                                <div class="dot">
+                                    {% if display_mode == "notes" %}{{ cell.name }}{% elif display_mode == "intervals" %}{{ cell.interval }}{% else %}{{ cell.step }}{% endif %}
+                                </div>
                             {% endif %}
                         </div>
                     {% endfor %}

@@ -53,7 +53,7 @@ def home(request):
     managerTool.set_strings_tool()
     managerTool.set_scale('A', scale)
     matrix = set_matrix(managerTool.tool_strings, instrument)
-    return render(request, 'home.html', {'matrix': matrix})
+    return render(request, 'home.html', {'matrix': matrix, 'display_mode': 'degrees'})
 
 
 def button_action(request):
@@ -64,6 +64,7 @@ def button_action(request):
         selected_scale = request.POST.get('scale') if request.POST.get('scale') != "-1" else "mayor"                
         selected_key = request.POST.get('key') if request.POST.get('key') != "-1" else "A"                
         selected_instrument = request.POST.get('instrument') if request.POST.get('instrument') != "-1" else "guitar"
+        selected_display_mode = request.POST.get('display_mode') if request.POST.get('display_mode') else "degrees"
 
         tool = Instrument.Guitar
 
@@ -77,7 +78,7 @@ def button_action(request):
     managerTool.set_strings_tool()
     managerTool.set_scale(selected_key, scale)  
     matrix = set_matrix(managerTool.tool_strings, tool)
-    return render(request, 'home.html', {'matrix': matrix, 'scale' : selected_scale, 'key' : selected_key, 'instrument' : selected_instrument})
+    return render(request, 'home.html', {'matrix': matrix, 'scale' : selected_scale, 'key' : selected_key, 'instrument' : selected_instrument, 'display_mode': selected_display_mode})
 
 
 def set_matrix(tool_string, instrument):

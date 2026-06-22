@@ -85,12 +85,20 @@ class Manager:
             index_key_note = next(
                 (index for index, note in enumerate(s) if note.name == note_key), -1)
 
+            interval_map = {
+                0: '1', 1: 'b2', 2: '2', 3: 'b3', 4: '3', 5: '4',
+                6: 'b5', 7: '5', 8: 'b6', 9: '6', 10: 'b7', 11: '7'
+            }
+
             s[index_key_note].root = True
             s[index_key_note].step = interval
+            s[index_key_note].interval = '1'
             i = index_key_note
+            semitones_from_root = 0
 
             while not is_completed:
                 next_position = self.get_steps(scale[interval])
+                semitones_from_root += next_position
                 interval += 1
                 i = i + next_position
 
@@ -99,6 +107,7 @@ class Manager:
 
                 s[i].root = (s[i].name == note_key)
                 s[i].step = interval if interval < len(scale) else 1
+                s[i].interval = interval_map[semitones_from_root % 12]
 
                 if interval == len(scale):
                     is_completed = True
