@@ -16,13 +16,6 @@
         <!-- App header -->
         <div class="app-header">
             <h1 class="app-title">Scale<span>Tool</span></h1>
-            <div class="badge-group">
-                <span class="badge">Key <strong>{{ key|default:"A" }}</strong></span>
-                <span class="badge">{% if mode == 'chord' %}Chord{% else %}Scale{% endif %} <strong>{% if mode == 'chord' %}{{ chord|default:"Major"|title }}{% else %}{{ scale|default:"Mayor"|title }}{% endif %}</strong></span>
-                <span class="badge">
-                    {% if instrument == "bass4" %}Bass 4 (Standard){% elif instrument == "bass4_drop_d" %}Bass 4 (Drop D){% elif instrument == "bass4_drop_c" %}Bass 4 (Drop C){% elif instrument == "bass5" %}Bass 5{% elif instrument == "guitar_drop_d" %}Guitar (Drop D){% elif instrument == "guitar_half_step_down" %}Guitar (Half-Step Down){% elif instrument == "guitar_d_standard" %}Guitar (D Standard){% elif instrument == "guitar_drop_c" %}Guitar (Drop C){% elif instrument == "guitar_dadgad" %}Guitar (DADGAD){% elif instrument == "guitar_open_g" %}Guitar (Open G){% elif instrument == "guitar_open_d" %}Guitar (Open D){% else %}Guitar (Standard){% endif %}
-                </span>
-            </div>
         </div>
 
         <!-- Controls (moved up) -->
