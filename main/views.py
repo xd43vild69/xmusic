@@ -8,6 +8,51 @@ from .entities.note import Note
 
 strings = 5
 
+# Human-readable labels for the dynamic "now showing" header
+INSTRUMENT_LABELS = {
+    "bass4": "Bass 4 (Standard)",
+    "bass4_drop_d": "Bass 4 (Drop D)",
+    "bass4_drop_c": "Bass 4 (Drop C)",
+    "bass5": "Bass 5",
+    "guitar": "Guitar (Standard)",
+    "guitar_drop_d": "Guitar (Drop D)",
+    "guitar_half_step_down": "Guitar (Half-Step Down)",
+    "guitar_d_standard": "Guitar (D Standard)",
+    "guitar_drop_c": "Guitar (Drop C)",
+    "guitar_dadgad": "Guitar (DADGAD)",
+    "guitar_open_g": "Guitar (Open G)",
+    "guitar_open_d": "Guitar (Open D)",
+}
+
+SCALE_LABELS = {
+    "mayor": "Mayor", "minor": "Minor", "blues_minor": "Blues Minor",
+    "blues_major": "Blues Mayor", "mixolydian": "Mixolydian", "locrian": "Locrian",
+    "octatonic": "Octatonic", "dark_3": "Dark 3", "dark_4": "Dark 4", "dark_5": "Dark 5",
+}
+
+CHORD_LABELS = {
+    "major": "Major", "minor": "Minor", "maj7": "Maj7", "min7": "Min7",
+    "dom7": "Dom7", "m7b5": "m7b5", "dim": "Dim", "aug": "Aug",
+}
+
+PROGRESSION_LABELS = {
+    "pop-punk": "Pop-Punk (I-V-vi-IV)", "blues-metal": "Blues-Metal (I-IV-V)",
+    "jazz_ii_v_i": "Jazz (ii-V-I)", "doo_wop-Retro": "Doo-Wop-Retro (I-vi-IV-V)",
+    "andalusian-descenso": "Andalusian-Descenso (i-VII-VI-V)",
+    "epic_minor": "Epic Minor (i-VI-III-VII)",
+}
+
+
+def build_now_showing(mode, key, scale, chord, progression, instrument):
+    if mode == "chord":
+        selection = CHORD_LABELS.get(chord, chord)
+    elif mode == "progression":
+        selection = PROGRESSION_LABELS.get(progression, progression)
+    else:
+        selection = SCALE_LABELS.get(scale, scale)
+    instrument_label = INSTRUMENT_LABELS.get(instrument, instrument)
+    return f"{key} · {selection}", instrument_label
+
 def get_scale(selected_scale):
     scale = []
     if selected_scale == "mayor":
@@ -91,8 +136,9 @@ def home(request):
     raw_matrix = set_matrix(managerTool.tool_strings, instrument)
     string_names = list(reversed(managerTool.instrument))
     matrix = [{'name': name, 'cells': row} for name, row in zip(string_names, raw_matrix)]
+    now_showing, instrument_label = build_now_showing('scale', 'A', 'mayor', 'major', 'pop-punk', 'bass4')
     return render(request, 'home.html', {
-        'matrix': matrix, 
+        'matrix': matrix,
         'string_names': string_names,
         'display_mode': 'degrees',
         'mode': 'scale',
@@ -100,7 +146,9 @@ def home(request):
         'chord': 'major',
         'progression': 'pop-punk',
         'key': 'A',
-        'instrument': 'bass4'
+        'instrument': 'bass4',
+        'now_showing': now_showing,
+        'instrument_label': instrument_label,
     })
 
 
@@ -166,16 +214,21 @@ def button_action(request):
     raw_matrix = set_matrix(managerTool.tool_strings, tool)
     string_names = list(reversed(managerTool.instrument))
     matrix = [{'name': name, 'cells': row} for name, row in zip(string_names, raw_matrix)]
+    now_showing, instrument_label = build_now_showing(
+        selected_mode, selected_key, selected_scale, selected_chord,
+        selected_progression, selected_instrument)
     return render(request, 'home.html', {
-        'matrix': matrix, 
+        'matrix': matrix,
         'string_names': string_names,
         'mode': selected_mode,
-        'scale': selected_scale, 
+        'scale': selected_scale,
         'chord': selected_chord,
         'progression': selected_progression,
-        'key': selected_key, 
-        'instrument': selected_instrument, 
-        'display_mode': selected_display_mode
+        'key': selected_key,
+        'instrument': selected_instrument,
+        'display_mode': selected_display_mode,
+        'now_showing': now_showing,
+        'instrument_label': instrument_label,
     })
 
 

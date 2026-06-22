@@ -150,68 +150,179 @@ body {
     margin-bottom: 8px;
 }
 
+/* ── Now showing header ─────────────────────────────────── */
+
+.now-showing {
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0 4px;
+}
+
+.now-showing__title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e8e8f5;
+    letter-spacing: 0.02em;
+}
+
+.now-showing__instrument {
+    font-size: 12px;
+    font-weight: 600;
+    color: #8a8aa5;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
 /* ── Fretboard box ──────────────────────────────────────── */
 
 .box {
     width: 100%;
     flex: 1;
-    background-color: #1a1a24;
+    background-color: #161018;
     border: 1px solid #2a2a3a;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px 16px;
+    padding: 18px 14px;
     min-height: 400px;
     overflow: auto;
+}
+
+/* The wooden board surface */
+.fretboard {
+    position: relative;
+    width: 100%;
+    background: #241a12;
+    background-image: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.10) 0px,
+        rgba(0, 0, 0, 0.10) 1px,
+        rgba(255, 255, 255, 0.015) 2px,
+        rgba(255, 255, 255, 0.015) 5px);
+    border: 1px solid #3a2a1c;
+    border-radius: 8px;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+    padding: 8px 0;
+}
+
+/* ── Inlay markers ──────────────────────────────────────── */
+
+.inlay-layer {
+    position: absolute;
+    inset: 8px 0;
+    display: grid;
+    grid-template-columns: 50px repeat(13, 1fr);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.inlay-spacer {
+    width: 100%;
+}
+
+.inlay-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.inlay {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #cdbfa6;
+    opacity: 0.28;
+    box-shadow: 0 0 4px rgba(205, 191, 166, 0.4);
+}
+
+.inlay-cell:has(.inlay--double) {
+    justify-content: space-evenly;
+    padding: 22% 0;
 }
 
 /* ── Matrix grid ────────────────────────────────────────── */
 
 .matrix {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 6px;
     width: 100%;
+    z-index: 1;
+}
+
+/* Nut: thick bright bar between string names and fret 0 */
+.matrix::before {
+    content: '';
+    position: absolute;
+    left: 50px;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: #d8cdbb;
+    border-radius: 2px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    z-index: 2;
 }
 
 .row {
+    position: relative;
     display: grid;
     grid-template-columns: 50px repeat(13, 1fr);
-    gap: 6px;
     width: 100%;
 }
+
+/* String: continuous horizontal line, thicker toward the bass */
+.row::after {
+    content: '';
+    position: absolute;
+    left: 50px;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: #b3b3c4;
+    opacity: 0.5;
+    transform: translateY(-50%);
+    z-index: 0;
+}
+
+.row:nth-child(1)::after { height: 1px; }
+.row:nth-child(2)::after { height: 1.5px; }
+.row:nth-child(3)::after { height: 2px; }
+.row:nth-child(4)::after { height: 2.6px; }
+.row:nth-child(5)::after { height: 3.3px; }
+.row:nth-child(6)::after { height: 4px; }
 
 /* ── Cells ──────────────────────────────────────────────── */
 
 .cell,
 .cell_first,
 .cell_fret_mark {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 72px;
-    border-radius: 8px;
+    height: 66px;
+    z-index: 1;
 }
 
-.cell {
+.cell,
+.cell_fret_mark {
     width: 100%;
-    background-color: #22223a;
+    background-color: transparent;
+    border-right: 2px solid #6b5740;
 }
 
 .cell_first {
     width: 100%;
-    background-color: #1a1a2e;
+    background-color: transparent;
     font-size: 14px;
     font-weight: 700;
-    color: #7080c0;
+    color: #b9a98c;
     letter-spacing: 0.05em;
-}
-
-.cell_fret_mark {
-    width: 100%;
-    background-color: #22223a;
-    box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(79, 142, 247, 0.3);
 }
 
 /* ── Note dots ──────────────────────────────────────────── */
@@ -237,18 +348,37 @@ body {
     align-items: center;
     width: 50px;
     height: 50px;
-    background-color: #4f8ef7;
+    background-color: #5b6e8c;
     color: white;
     border-radius: 50%;
     font-size: 15px;
     font-weight: 600;
-    box-shadow: 0 0 12px rgba(79, 142, 247, 0.4);
+    box-shadow: 0 0 10px rgba(91, 110, 140, 0.4);
     transition: all 0.2s ease;
+}
+
+/* Note color encodes harmonic function */
+.dot[data-interval="3"],
+.dot[data-interval="b3"] {
+    background-color: #3bbf8a;
+    box-shadow: 0 0 12px rgba(59, 191, 138, 0.5);
+}
+
+.dot[data-interval="5"],
+.dot[data-interval="b5"] {
+    background-color: #6f9bff;
+    box-shadow: 0 0 12px rgba(111, 155, 255, 0.5);
+}
+
+.dot[data-interval="7"],
+.dot[data-interval="b7"] {
+    background-color: #caa14e;
+    box-shadow: 0 0 12px rgba(202, 161, 78, 0.5);
 }
 
 .dot.disabled {
     background-color: transparent;
-    border: 2px solid #2a2a3a;
+    border: 2px solid #3a2a1c;
     box-shadow: none;
     color: transparent;
 }
@@ -388,3 +518,35 @@ body {
 .btn-primary:active {
     transform: scale(0.97);
 }
+
+/* ── Legend ─────────────────────────────────────────────── */
+
+.legend {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+    padding: 2px 4px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: #9a9ab0;
+}
+
+.legend-dot {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.legend-dot--root { background: #f5533d; outline: 2px solid rgba(255, 255, 255, 0.25); outline-offset: -1px; }
+.legend-dot--third { background: #3bbf8a; }
+.legend-dot--fifth { background: #6f9bff; }
+.legend-dot--seventh { background: #caa14e; }
+.legend-dot--other { background: #5b6e8c; }

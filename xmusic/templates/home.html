@@ -221,8 +221,28 @@
             </form>
         </div>
 
+        <!-- Now showing -->
+        <div class="now-showing">
+            <span class="now-showing__title">{{ now_showing }}</span>
+            <span class="now-showing__instrument">{{ instrument_label }}</span>
+        </div>
+
         <!-- Fretboard -->
         <div class="box">
+          <div class="fretboard">
+            <!-- Inlay markers (mother-of-pearl dots on the board) -->
+            <div class="inlay-layer">
+                <div class="inlay-spacer"></div>
+                {% for i in "0123456789012" %}
+                    {% if forloop.counter == 13 %}
+                        <div class="inlay-cell"><span class="inlay inlay--double"></span><span class="inlay inlay--double"></span></div>
+                    {% elif forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 10 %}
+                        <div class="inlay-cell"><span class="inlay"></span></div>
+                    {% else %}
+                        <div class="inlay-cell"></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
             <div class="matrix">
                 {% for row in matrix %}
                 <div class="row">
@@ -250,6 +270,7 @@
                 </div>
                 {% endfor %}
             </div>
+          </div>
         </div>
 
         <!-- Fret numbers -->
@@ -286,6 +307,15 @@
                     {% endif %}
                 {% endfor %}
             </div>
+        </div>
+
+        <!-- Legend: note color = harmonic function -->
+        <div class="legend">
+            <span class="legend-item"><span class="legend-dot legend-dot--root"></span>Tónica (1)</span>
+            <span class="legend-item"><span class="legend-dot legend-dot--third"></span>3ª (carácter)</span>
+            <span class="legend-item"><span class="legend-dot legend-dot--fifth"></span>5ª (pilar)</span>
+            <span class="legend-item"><span class="legend-dot legend-dot--seventh"></span>7ª / tensión</span>
+            <span class="legend-item"><span class="legend-dot legend-dot--other"></span>otro grado</span>
         </div>
 
     </div>
