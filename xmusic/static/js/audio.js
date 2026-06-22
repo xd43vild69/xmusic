@@ -149,4 +149,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     attachEvents(circles);
     attachEvents(dots);
+
+    // Hover logic for interval codex
+    const intervalItems = document.querySelectorAll('.interval-item');
+    
+    intervalItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            const interval = this.getAttribute('data-interval');
+            if (interval) {
+                // Highlight matching elements on fretboard
+                const matchingElements = document.querySelectorAll(`.circle[data-interval="${interval}"], .dot[data-interval="${interval}"]`);
+                matchingElements.forEach(el => {
+                    el.classList.add('highlight-interval');
+                });
+            }
+        });
+
+        item.addEventListener('mouseleave', function() {
+            const interval = this.getAttribute('data-interval');
+            if (interval) {
+                // Remove highlight
+                const matchingElements = document.querySelectorAll(`.circle[data-interval="${interval}"], .dot[data-interval="${interval}"]`);
+                matchingElements.forEach(el => {
+                    el.classList.remove('highlight-interval');
+                });
+            }
+        });
+    });
 });
