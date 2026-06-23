@@ -195,6 +195,16 @@ body {
 .fretboard {
     position: relative;
     width: 100%;
+    padding: 8px 0;
+}
+
+.fretboard::before {
+    content: '';
+    position: absolute;
+    left: 90px; /* Starts at the nut */
+    right: 0;
+    top: 0;
+    bottom: 0;
     background: #241a12;
     background-image: repeating-linear-gradient(
         0deg,
@@ -203,9 +213,10 @@ body {
         rgba(255, 255, 255, 0.015) 2px,
         rgba(255, 255, 255, 0.015) 5px);
     border: 1px solid #3a2a1c;
-    border-radius: 8px;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
     box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
-    padding: 8px 0;
+    z-index: 0;
 }
 
 /* ── Inlay markers ──────────────────────────────────────── */
@@ -214,7 +225,7 @@ body {
     position: absolute;
     inset: 8px 0;
     display: grid;
-    grid-template-columns: 50px repeat(13, 1fr);
+    grid-template-columns: 50px 40px repeat(12, 1fr);
     pointer-events: none;
     z-index: 0;
 }
@@ -258,10 +269,10 @@ body {
 .matrix::before {
     content: '';
     position: absolute;
-    left: 50px;
+    left: 90px;
     top: 0;
     bottom: 0;
-    width: 5px;
+    width: 6px;
     background: #d8cdbb;
     border-radius: 2px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
@@ -271,7 +282,7 @@ body {
 .row {
     position: relative;
     display: grid;
-    grid-template-columns: 50px repeat(13, 1fr);
+    grid-template-columns: 50px 40px repeat(12, 1fr);
     width: 100%;
 }
 
@@ -300,6 +311,7 @@ body {
 
 .cell,
 .cell_first,
+.cell_open,
 .cell_fret_mark {
     position: relative;
     display: flex;
@@ -314,6 +326,12 @@ body {
     width: 100%;
     background-color: transparent;
     border-right: 2px solid #6b5740;
+}
+
+.cell_open {
+    width: 100%;
+    background-color: transparent;
+    border-right: none;
 }
 
 .cell_first {
@@ -359,6 +377,20 @@ body {
     transition: all 0.2s ease;
 }
 
+.cell_open .circle {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+    border-width: 2px;
+}
+
+.cell_open .dot {
+    width: 30px;
+    height: 30px;
+    font-size: 11px;
+    border-width: 2px;
+}
+
 /* Note border encodes harmonic function; fill stays uniform */
 .dot[data-interval="3"],
 .dot[data-interval="b3"] {
@@ -402,7 +434,7 @@ body {
 
 .fret-row {
     display: grid;
-    grid-template-columns: 50px repeat(13, 1fr);
+    grid-template-columns: 50px 40px repeat(12, 1fr);
     gap: 6px;
     width: 100%;
 }
