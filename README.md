@@ -1,6 +1,6 @@
 # xmusic - Scale Tool
 
-![xmusic App Preview](./xmusic_app_preview.png)
+![xmusic App Preview](./screenshot.png)
 
 **xmusic** is a Django-based web application designed for musicians. It renders an interactive fretboard diagram that displays scales and chords across different keys, instruments, and tunings.
 
