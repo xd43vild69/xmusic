@@ -55,6 +55,93 @@ body {
     color: #4f8ef7;
 }
 
+/* ── Metronome ──────────────────────────────────────────── */
+
+.metronome {
+    display: flex;
+    align-items: center;
+    background-color: #1e1924;
+    border: 1px solid #2a2a3a;
+    border-radius: 6px;
+    padding: 4px 8px;
+    gap: 12px;
+}
+
+.metro-btn {
+    background: transparent;
+    border: none;
+    color: #4f8ef7;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.metro-btn:hover {
+    background: rgba(79, 142, 247, 0.15);
+}
+
+.metro-btn.active {
+    color: #f5533d;
+}
+.metro-btn.active:hover {
+    background: rgba(245, 83, 61, 0.15);
+}
+
+.metro-bpm-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.metro-bpm {
+    background: transparent;
+    border: none;
+    color: #e0e0f0;
+    font-size: 15px;
+    font-weight: 700;
+    width: 34px;
+    text-align: right;
+    outline: none;
+    padding: 0;
+}
+
+.metro-bpm::-webkit-outer-spin-button,
+.metro-bpm::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.metro-bpm[type=number] {
+    -moz-appearance: textfield;
+}
+
+.metro-label {
+    color: #8a8aa5;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.metro-led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #2a2a3a;
+    box-shadow: inset 0 0 2px rgba(0,0,0,0.5);
+    transition: background-color 0.05s ease-out;
+}
+
+.metro-led.flash {
+    background-color: #3bbf8a;
+    box-shadow: 0 0 8px #3bbf8a, inset 0 0 4px #fff;
+}
+
 /* ── Interval Codex ─────────────────────────────────────── */
 
 .interval-codex {

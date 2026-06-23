@@ -101,9 +101,95 @@ const AudioSystem = (function() {
         currentGainNode = gainNode;
     }
 
+    // --- Metronome System ---
+    let isPlayingMetronome = false;
+    let bpm = 120;
+    let nextNoteTime = 0.0;
+    let timerWorker = null;
+    const lookahead = 25.0; 
+    const scheduleAheadTime = 0.1;
+
+    function nextNote() {
+        const secondsPerBeat = 60.0 / bpm;
+        nextNoteTime += secondsPerBeat;
+    }
+
+    function scheduleNote(time) {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.type = 'square';
+        osc.frequency.value = 800; // Pitch of the beep
+
+        // Envelope for short beep
+        gain.gain.setValueAtTime(0, time);
+        gain.gain.linearRampToValueAtTime(0.3, time + 0.002);
+        gain.gain.linearRampToValueAtTime(0, time + 0.04);
+
+        osc.start(time);
+        osc.stop(time + 0.05);
+
+        // Visual flash sync
+        const timeToPlay = time - ctx.currentTime;
+        if (timeToPlay > 0) {
+            setTimeout(flashLed, timeToPlay * 1000);
+        } else {
+            flashLed();
+        }
+    }
+
+    function flashLed() {
+        const led = document.getElementById('metro-led');
+        if (led) {
+            led.classList.add('flash');
+            setTimeout(() => led.classList.remove('flash'), 80);
+        }
+    }
+
+    function scheduler() {
+        if (!isPlayingMetronome) return;
+        const ctx = getAudioContext();
+
+        while (nextNoteTime < ctx.currentTime + scheduleAheadTime) {
+            scheduleNote(nextNoteTime);
+            nextNote();
+        }
+
+        timerWorker = setTimeout(scheduler, lookahead);
+    }
+
+    function startMetronome() {
+        if (isPlayingMetronome) return;
+        const ctx = getAudioContext();
+        isPlayingMetronome = true;
+        nextNoteTime = ctx.currentTime + 0.05;
+        scheduler();
+    }
+
+    function stopMetronome() {
+        isPlayingMetronome = false;
+        clearTimeout(timerWorker);
+    }
+
+    function setBpm(newBpm) {
+        bpm = newBpm;
+    }
+
+    function isMetronomePlaying() {
+        return isPlayingMetronome;
+    }
+
     return {
         play: playNote,
-        stop: stopCurrentNote
+        stop: stopCurrentNote,
+        startMetronome: startMetronome,
+        stopMetronome: stopMetronome,
+        setBpm: setBpm,
+        isMetronomePlaying: isMetronomePlaying
     };
 })();
 
@@ -139,16 +225,40 @@ document.addEventListener("DOMContentLoaded", () => {
                 AudioSystem.stop();
             });
             el.addEventListener('mouseleave', function(e) {
-                // If a mouseleave fires while mousedown was active on this element
-                if (e.buttons > 0) {
-                    AudioSystem.stop();
-                }
+                AudioSystem.stop();
             });
         });
     }
 
     attachEvents(circles);
     attachEvents(dots);
+
+    // --- Metronome UI Binding ---
+    const metroPlayBtn = document.getElementById('metro-play');
+    const metroBpmInput = document.getElementById('metro-bpm');
+
+    if (metroPlayBtn && metroBpmInput) {
+        metroPlayBtn.addEventListener('click', () => {
+            if (AudioSystem.isMetronomePlaying()) {
+                AudioSystem.stopMetronome();
+                metroPlayBtn.textContent = '▶';
+                metroPlayBtn.classList.remove('active');
+            } else {
+                AudioSystem.startMetronome();
+                metroPlayBtn.textContent = '⬛';
+                metroPlayBtn.classList.add('active');
+            }
+        });
+
+        metroBpmInput.addEventListener('input', (e) => {
+            let val = parseInt(e.target.value);
+            if (val >= 10 && val <= 300) {
+                AudioSystem.setBpm(val);
+            }
+        });
+
+        AudioSystem.setBpm(parseInt(metroBpmInput.value) || 120);
+    }
 
     // Hover logic for interval codex
     const intervalItems = document.querySelectorAll('.interval-item');

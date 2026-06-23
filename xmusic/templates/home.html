@@ -17,6 +17,16 @@
         <!-- App header -->
         <div class="app-header">
             <h1 class="app-title">xmusic<span> tool</span></h1>
+            
+            <!-- Metronome Transport -->
+            <div class="metronome">
+                <button id="metro-play" class="metro-btn" title="Toggle Metronome">▶</button>
+                <div class="metro-bpm-container">
+                    <input type="number" id="metro-bpm" class="metro-bpm" value="120" min="10" max="300">
+                    <span class="metro-label">BPM</span>
+                </div>
+                <div id="metro-led" class="metro-led"></div>
+            </div>
         </div>
 
         <!-- Interval Codex -->
