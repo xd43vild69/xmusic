@@ -143,7 +143,7 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="mode">Mode</label>
-                    <select name="mode" id="mode" onchange="this.form.submit()">
+                    <select name="mode" id="mode" onchange="if(this.value === 'progression') document.getElementById('display_mode').value = 'intervals'; this.form.submit()">
                         <option value="scale" {% if mode == "scale" %}selected{% endif %}>Scale</option>
                         <option value="chord" {% if mode == "chord" %}selected{% endif %}>Chord</option>
                         <option value="progression" {% if mode == "progression" %}selected{% endif %}>Progression</option>
