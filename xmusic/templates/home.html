@@ -20,6 +20,14 @@
             
             <!-- Metronome Transport -->
             <div class="metronome">
+                <div class="metro-arp-container">
+                    <label class="toggle-switch" title="Auto-Play Arpeggiator">
+                        <input type="checkbox" id="metro-arp">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="metro-label">ARP</span>
+                </div>
+                <div class="metro-divider"></div>
                 <button id="metro-play" class="metro-btn" title="Toggle Metronome">▶</button>
                 <div class="metro-bpm-container">
                     <input type="number" id="metro-bpm" class="metro-bpm" value="120" min="10" max="300">

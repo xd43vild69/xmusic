@@ -109,37 +109,164 @@ const AudioSystem = (function() {
     const lookahead = 25.0; 
     const scheduleAheadTime = 0.1;
 
+    let isArpEnabled = false;
+    let arpSequence = [];
+    let arpIndex = 0;
+
     function nextNote() {
         const secondsPerBeat = 60.0 / bpm;
         nextNoteTime += secondsPerBeat;
     }
 
-    function scheduleNote(time) {
+    function setArpEnabled(enabled) {
+        isArpEnabled = enabled;
+        if (enabled && isPlayingMetronome) {
+            buildArpSequence();
+            arpIndex = 0;
+        }
+    }
+
+    function buildArpSequence() {
+        const instrumentSelect = document.getElementById('instrument');
+        let currentInstrument = instrumentSelect ? (instrumentSelect.value === "-1" ? "guitar" : instrumentSelect.value) : "guitar";
+        const instrumentTuning = tunings[currentInstrument] || tunings["guitar"];
+        
+        const elements = document.querySelectorAll('.circle, .dot:not(.disabled)');
+        let notes = [];
+        let lowestRootMidi = Infinity;
+        let highestRootMidi = -Infinity;
+
+        elements.forEach(el => {
+            const stringIndex = parseInt(el.getAttribute('data-string'));
+            const fretIndex = parseInt(el.getAttribute('data-fret'));
+            const interval = el.getAttribute('data-interval');
+            
+            if (!isNaN(stringIndex) && !isNaN(fretIndex)) {
+                const baseMidiNote = instrumentTuning[stringIndex];
+                if (baseMidiNote !== undefined) {
+                    const midiNote = baseMidiNote + fretIndex;
+                    notes.push({
+                        el: el,
+                        midiNote: midiNote,
+                        interval: interval,
+                        stringIndex: stringIndex,
+                        fretIndex: fretIndex
+                    });
+                    
+                    if (interval === "1") {
+                        if (midiNote < lowestRootMidi) lowestRootMidi = midiNote;
+                        if (midiNote > highestRootMidi) highestRootMidi = midiNote;
+                    }
+                }
+            }
+        });
+
+        if (lowestRootMidi === Infinity) {
+            lowestRootMidi = Math.min(...notes.map(n => n.midiNote));
+            highestRootMidi = Math.max(...notes.map(n => n.midiNote));
+        }
+
+        notes = notes.filter(n => n.midiNote >= lowestRootMidi && n.midiNote <= highestRootMidi);
+        notes.sort((a, b) => {
+            if (a.midiNote === b.midiNote) {
+                return a.stringIndex - b.stringIndex;
+            }
+            return a.midiNote - b.midiNote;
+        });
+
+        let uniqueNotes = [];
+        let lastMidi = -1;
+        for (let n of notes) {
+            if (n.midiNote !== lastMidi) {
+                uniqueNotes.push(n);
+                lastMidi = n.midiNote;
+            }
+        }
+
+        if (uniqueNotes.length === 0) {
+            arpSequence = [];
+            return;
+        }
+
+        let seq = [...uniqueNotes];
+        for (let i = uniqueNotes.length - 2; i > 0; i--) {
+            seq.push(uniqueNotes[i]);
+        }
+        
+        arpSequence = seq;
+        arpIndex = 0;
+    }
+
+    function playArpNote(instrument, stringIndex, fretIndex, time) {
         const ctx = getAudioContext();
+        const instrumentTuning = tunings[instrument] || tunings["guitar"];
+        const baseMidiNote = instrumentTuning[stringIndex];
+        if (baseMidiNote === undefined) return;
+        
+        const midiNote = baseMidiNote + fretIndex;
+        const freq = midiToFreq(midiNote);
+
         const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
+        const gainNode = ctx.createGain();
 
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, time);
 
-        osc.type = 'square';
-        osc.frequency.value = 800; // Pitch of the beep
+        gainNode.gain.setValueAtTime(0, time);
+        gainNode.gain.linearRampToValueAtTime(0.8, time + 0.02);
+        gainNode.gain.linearRampToValueAtTime(0, time + 0.3);
 
-        // Envelope for short beep
-        gain.gain.setValueAtTime(0, time);
-        gain.gain.linearRampToValueAtTime(0.3, time + 0.002);
-        gain.gain.linearRampToValueAtTime(0, time + 0.04);
+        osc.connect(gainNode);
+        gainNode.connect(ctx.destination);
 
         osc.start(time);
-        osc.stop(time + 0.05);
+        osc.stop(time + 0.35);
+    }
 
-        // Visual flash sync
-        const timeToPlay = time - ctx.currentTime;
-        if (timeToPlay > 0) {
-            setTimeout(flashLed, timeToPlay * 1000);
+    function scheduleNote(time) {
+        const ctx = getAudioContext();
+        const instrumentSelect = document.getElementById('instrument');
+        let currentInstrument = instrumentSelect ? (instrumentSelect.value === "-1" ? "guitar" : instrumentSelect.value) : "guitar";
+
+        if (isArpEnabled && arpSequence.length > 0) {
+            const noteData = arpSequence[arpIndex];
+            playArpNote(currentInstrument, noteData.stringIndex, noteData.fretIndex, time);
+            
+            const timeToPlay = time - ctx.currentTime;
+            if (timeToPlay > 0) {
+                setTimeout(() => highlightArpNote(noteData.el), timeToPlay * 1000);
+            } else {
+                highlightArpNote(noteData.el);
+            }
+            
+            arpIndex = (arpIndex + 1) % arpSequence.length;
         } else {
-            flashLed();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.type = 'square';
+            osc.frequency.value = 800; 
+            gain.gain.setValueAtTime(0, time);
+            gain.gain.linearRampToValueAtTime(0.3, time + 0.002);
+            gain.gain.linearRampToValueAtTime(0, time + 0.04);
+            osc.start(time);
+            osc.stop(time + 0.05);
+
+            const timeToPlay = time - ctx.currentTime;
+            if (timeToPlay > 0) {
+                setTimeout(flashLed, timeToPlay * 1000);
+            } else {
+                flashLed();
+            }
         }
+    }
+
+    function highlightArpNote(el) {
+        if (!el) return;
+        el.classList.add('highlight-arp');
+        setTimeout(() => el.classList.remove('highlight-arp'), (60.0 / bpm) * 1000 * 0.8);
+        flashLed();
     }
 
     function flashLed() {
@@ -166,6 +293,7 @@ const AudioSystem = (function() {
         if (isPlayingMetronome) return;
         const ctx = getAudioContext();
         isPlayingMetronome = true;
+        if (isArpEnabled) buildArpSequence();
         nextNoteTime = ctx.currentTime + 0.05;
         scheduler();
     }
@@ -189,7 +317,8 @@ const AudioSystem = (function() {
         startMetronome: startMetronome,
         stopMetronome: stopMetronome,
         setBpm: setBpm,
-        isMetronomePlaying: isMetronomePlaying
+        isMetronomePlaying: isMetronomePlaying,
+        setArpEnabled: setArpEnabled
     };
 })();
 
@@ -236,6 +365,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- Metronome UI Binding ---
     const metroPlayBtn = document.getElementById('metro-play');
     const metroBpmInput = document.getElementById('metro-bpm');
+    const metroArpToggle = document.getElementById('metro-arp');
+
+    if (metroArpToggle) {
+        metroArpToggle.addEventListener('change', (e) => {
+            AudioSystem.setArpEnabled(e.target.checked);
+        });
+        AudioSystem.setArpEnabled(metroArpToggle.checked);
+    }
 
     if (metroPlayBtn && metroBpmInput) {
         metroPlayBtn.addEventListener('click', () => {
