@@ -103,6 +103,25 @@ const AudioSystem = (function() {
 
     // --- Metronome System ---
     let isPlayingMetronome = false;
+    let wakeLock = null;
+
+    async function requestWakeLock() {
+        if ('wakeLock' in navigator) {
+            try {
+                wakeLock = await navigator.wakeLock.request('screen');
+            } catch (err) {
+                console.error(`Wake Lock error: ${err.name}, ${err.message}`);
+            }
+        }
+    }
+
+    function releaseWakeLock() {
+        if (wakeLock !== null) {
+            wakeLock.release().then(() => {
+                wakeLock = null;
+            });
+        }
+    }
     let bpm = 120;
     let nextNoteTime = 0.0;
     let timerWorker = null;
@@ -293,6 +312,7 @@ const AudioSystem = (function() {
         if (isPlayingMetronome) return;
         const ctx = getAudioContext();
         isPlayingMetronome = true;
+        requestWakeLock();
         if (isArpEnabled) buildArpSequence();
         nextNoteTime = ctx.currentTime + 0.05;
         scheduler();
@@ -300,6 +320,7 @@ const AudioSystem = (function() {
 
     function stopMetronome() {
         isPlayingMetronome = false;
+        releaseWakeLock();
         clearTimeout(timerWorker);
     }
 
@@ -384,6 +405,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 AudioSystem.startMetronome();
                 metroPlayBtn.textContent = '⬛';
                 metroPlayBtn.classList.add('active');
+            }
+        });
+
+        // Toggle metronome with Space key
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'select') {
+                return;
+            }
+            if (e.code === 'Space') {
+                e.preventDefault();
+                metroPlayBtn.click();
             }
         });
 
